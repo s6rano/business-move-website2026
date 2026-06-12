@@ -392,15 +392,28 @@
   };
 
   const moverLabels = {
+    fr: {
+      "Brussels": "Bruxelles",
+      "Antwerpen": "Anvers",
+      "Gent": "Gand",
+      "Kortrijk": "Courtrai",
+      "Mechelen": "Malines",
+      "Leuven": "Louvain",
+      "Aalst": "Alost"
+    },
     nl: {
       "Bruxelles": "Brussel",
       "Malines": "Mechelen",
       "Liège": "Luik",
       "Courtrai": "Kortrijk",
       "Bureaux": "Kantoren",
+      "Déménagement professionnel": "Professionele verhuis",
       "Mobilier": "Meubilair",
       "Stockage": "Opslag",
       "Archives": "Archieven",
+      "International": "Internationaal",
+      "Machines": "Machines",
+      "Agréé": "Erkend",
       "Planning": "Planning",
       "Week-end": "Weekend",
       "Industrie": "Industrie",
@@ -424,9 +437,13 @@
       "Liège": "Liege",
       "Courtrai": "Kortrijk",
       "Bureaux": "Offices",
+      "Déménagement professionnel": "Corporate moving",
       "Mobilier": "Furniture",
       "Stockage": "Storage",
       "Archives": "Archives",
+      "International": "International",
+      "Machines": "Machinery",
+      "Agréé": "Accredited",
       "Planning": "Planning",
       "Week-end": "Weekend",
       "Industrie": "Industrial",
@@ -541,23 +558,31 @@
     const specialties = mover.specialties
       .map((specialty) => `<span class="pill">${localizeMover(specialty)}</span>`)
       .join("");
-    const contactLink = `mailto:${mover.email}?subject=${encodeURIComponent(t("search.subject"))}`;
+    const contactLink = mover.email
+      ? `mailto:${mover.email}?subject=${encodeURIComponent(t("search.subject"))}`
+      : mover.website || "#";
+    const contactLabel = mover.email
+      ? (options.short ? t("search.email") : t("search.contact"))
+      : "Website";
+    const rating = mover.rating ? `<span class="pill">${mover.rating}/5</span>` : "";
+    const phone = mover.phone ? `<p class="microcopy">${mover.phone}</p>` : "";
 
     return `
       <article class="result-card">
         <div>
           <h3>${mover.name}</h3>
           <p class="muted">${mover.address}</p>
+          ${phone}
           <div class="result-meta">
             <span class="pill">${localizeMover(mover.city)}</span>
-            <span class="pill">${mover.rating}/5</span>
+            ${rating}
             <span class="pill">${localizeMover(mover.minProject)}</span>
             ${specialties}
           </div>
         </div>
         <div>
           <p class="distance">${mover.distance.toFixed(1)} km</p>
-          <a class="btn secondary" href="${contactLink}">${options.short ? t("search.email") : t("search.contact")}</a>
+          <a class="btn secondary" href="${contactLink}">${contactLabel}</a>
         </div>
       </article>
     `;
