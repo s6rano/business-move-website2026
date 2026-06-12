@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Devis déménagement d'entreprise | Business Move</title>
+    <meta name="description" content="Calculez une estimation de déménagement d'entreprise et recevez trois contacts de déménageurs proches.">
+    <link rel="icon" href="identity/logo_bm_transparent_white_512.png">
+    <link rel="stylesheet" href="assets/site.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Navigation principale" data-i18n-aria-label="aria.nav">
+        <a class="brand" href="index.html" aria-label="Business Move">
+          <img src="identity/logo-bm-white-200-62.png" alt="Business Move">
+        </a>
+        <div class="nav-links">
+          <a href="index.html" data-i18n="nav.directory">Annuaire</a>
+          <a href="organiser.html" data-i18n="nav.organize">Organiser votre déménagement</a>
+          <a href="devis.html" aria-current="page" data-i18n="nav.quoteContact">Devis & contact</a>
+        </div>
+        <div class="nav-actions">
+          <div class="lang" aria-label="Langues" data-i18n-aria-label="aria.languages">
+            <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+            <button type="button" data-lang="nl" aria-pressed="false">NL</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <button class="theme-toggle" type="button" data-theme-toggle data-i18n="theme.dark">Sombre</button>
+          <a class="btn light" href="#quote-form" data-i18n="nav.quote">Devis</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="page-hero">
+        <div class="section-inner">
+          <p class="eyebrow" data-i18n="quote.eyebrow">Devis & contacts</p>
+          <h1 data-i18n="quote.title">Calculez une fourchette et préparez un email de demande.</h1>
+          <p class="lead" data-i18n="quote.lead">Le calculateur estime le budget, sélectionne trois déménageurs proches du code postal d'origine et génère un email prêt à envoyer.</p>
+        </div>
+      </section>
+
+      <section class="section paper">
+        <div class="section-inner quote-layout">
+          <form id="quote-form" class="quote-panel">
+            <h2 data-i18n="quote.formTitle">Paramètres du projet</h2>
+            <p class="muted" data-i18n="quote.formHelp">Les montants sont indicatifs et doivent être confirmés après visite technique.</p>
+            <div class="quote-form-grid">
+              <div class="field">
+                <label for="company" data-i18n="quote.company">Entreprise</label>
+                <input id="company" name="company" value="Votre entreprise">
+              </div>
+              <div class="field">
+                <label for="email" data-i18n="quote.email">Email destinataire</label>
+                <input id="email" name="email" type="email" placeholder="prenom@entreprise.be" data-i18n-placeholder="quote.emailPlaceholder">
+              </div>
+              <div class="field">
+                <label for="origin" data-i18n="quote.origin">Code postal départ</label>
+                <input id="origin" name="origin" inputmode="numeric" maxlength="4" value="1000">
+              </div>
+              <div class="field">
+                <label for="destination" data-i18n="quote.destination">Code postal arrivée</label>
+                <input id="destination" name="destination" inputmode="numeric" maxlength="4" value="1040">
+              </div>
+              <div class="field">
+                <label for="workstations" data-i18n="quote.workstations">Postes de travail</label>
+                <input id="workstations" name="workstations" type="number" min="1" value="35">
+              </div>
+              <div class="field">
+                <label for="volume" data-i18n="quote.volume">Volume estimé</label>
+                <input id="volume" name="volume" type="number" min="1" value="80">
+              </div>
+              <div class="field">
+                <label for="floors" data-i18n="quote.floors">Étages contraints</label>
+                <input id="floors" name="floors" type="number" min="0" value="2">
+              </div>
+              <div class="field">
+                <label for="radius" data-i18n="quote.radius">Rayon prestataires</label>
+                <select id="radius" name="radius">
+                  <option value="25">25 km</option>
+                  <option value="35" selected>35 km</option>
+                  <option value="50">50 km</option>
+                  <option value="75">75 km</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="lift" data-i18n="quote.lift">Ascenseur / monte-charge</label>
+                <select id="lift" name="lift">
+                  <option value="yes" selected data-i18n="quote.available">Disponible</option>
+                  <option value="no" data-i18n="quote.unavailable">Non disponible</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="it" data-i18n="quote.it">Matériel IT</label>
+                <select id="it" name="it">
+                  <option value="yes" selected data-i18n="quote.included">Inclus</option>
+                  <option value="no" data-i18n="quote.notIncluded">Non inclus</option>
+                </select>
+              </div>
+              <div class="field wide">
+                <label for="weekend" data-i18n="quote.timing">Intervention</label>
+                <select id="weekend" name="weekend">
+                  <option value="no" selected data-i18n="quote.weekday">En semaine</option>
+                  <option value="yes" data-i18n="quote.weekend">Week-end ou hors heures</option>
+                </select>
+              </div>
+              <div class="field wide">
+                <label for="notes" data-i18n="quote.notes">Notes</label>
+                <textarea id="notes" name="notes" placeholder="Contraintes d'accès, délai, sites multiples, stockage..." data-i18n-placeholder="quote.notesPlaceholder"></textarea>
+              </div>
+            </div>
+            <button class="btn full" type="submit" data-i18n="quote.recalculate">Recalculer</button>
+          </form>
+
+          <aside>
+            <div id="quote-output" class="price-card"></div>
+            <div class="soft-panel stack-gap">
+              <h2 data-i18n="quote.contactsTitle">3 contacts proposés</h2>
+              <div id="quote-movers" class="results-list"></div>
+            </div>
+            <div class="soft-panel promo stack-gap">
+              <img src="identity/logo-bm-white-200-62.png" alt="Business Move">
+              <h3 data-i18n="quote.gttpTitle">Coordination par Go to the Point</h3>
+              <p class="microcopy" data-i18n="quote.gttpText">Pour un appel d'offres propre et une bascule sans interruption, faites piloter le projet par une agence spécialisée en organisation de déménagement d'entreprise.</p>
+              <a class="btn light" href="https://gotothepoint.eu" data-i18n="quote.gttpCta">Voir gotothepoint.eu</a>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-inner">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow" data-i18n="quote.emailEyebrow">Email automatique</p>
+              <h2 data-i18n="quote.emailTitle">Envoyer l'estimation</h2>
+            </div>
+            <div>
+              <a id="email-link" class="btn" href="mailto:" data-i18n="quote.emailCta">Ouvrir l'email</a>
+            </div>
+          </div>
+          <div class="soft-panel">
+            <pre id="email-preview" class="email-preview"></pre>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          <img src="identity/logo-bm-white-200-62.png" alt="Business Move">
+          <p data-i18n="footer.baseline">Annuaire indépendant de déménageurs d'entreprise en Belgique.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html" data-i18n="nav.directory">Annuaire</a>
+          <a href="organiser.html" data-i18n="footer.guide">Guide</a>
+          <a href="devis.html" data-i18n="nav.quote">Devis</a>
+          <a href="https://gotothepoint.eu">gotothepoint.eu</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="data/movers.js"></script>
+    <script src="assets/site.js"></script>
+  </body>
+</html>

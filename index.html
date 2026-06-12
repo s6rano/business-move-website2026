@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Business Move | Trouver un déménageur d'entreprise en Belgique</title>
+    <meta name="description" content="Annuaire de déménageurs pour entreprises en Belgique avec recherche par code postal, rayon kilométrique et devis indicatif.">
+    <link rel="icon" href="identity/logo_bm_transparent_white_512.png">
+    <link rel="stylesheet" href="assets/site.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Navigation principale" data-i18n-aria-label="aria.nav">
+        <a class="brand" href="index.html" aria-label="Business Move">
+          <img src="identity/logo-bm-white-200-62.png" alt="Business Move">
+        </a>
+        <div class="nav-links">
+          <a href="index.html" aria-current="page" data-i18n="nav.directory">Annuaire</a>
+          <a href="organiser.html" data-i18n="nav.organize">Organiser votre déménagement</a>
+          <a href="devis.html" data-i18n="nav.quoteContact">Devis & contact</a>
+        </div>
+        <div class="nav-actions">
+          <div class="lang" aria-label="Langues" data-i18n-aria-label="aria.languages">
+            <button type="button" data-lang="fr" aria-pressed="true">FR</button>
+            <button type="button" data-lang="nl" aria-pressed="false">NL</button>
+            <button type="button" data-lang="en" aria-pressed="false">EN</button>
+          </div>
+          <button class="theme-toggle" type="button" data-theme-toggle data-i18n="theme.dark">Sombre</button>
+          <a class="btn light" href="devis.html" data-i18n="nav.quote">Devis</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <div class="hero-grid">
+            <div>
+              <p class="eyebrow" data-i18n="home.eyebrow">Annuaire belge B2B</p>
+              <h1 data-i18n="home.heroTitle">Trouvez un déménageur d'entreprise par code postal.</h1>
+              <p class="lead" data-i18n="home.heroLead">Recherchez les prestataires proches de votre site, comparez leur spécialité et élargissez le rayon pour inclure les communes voisines.</p>
+            </div>
+
+            <form id="search-form" class="search-panel" action="#search-results">
+              <h2 data-i18n="search.title">Recherche locale</h2>
+              <p class="muted" data-i18n="search.help">Saisissez le code postal du site à déménager.</p>
+              <div class="field-grid">
+                <div class="field">
+                  <label for="postal-code" data-i18n="search.postal">Code postal</label>
+                  <input id="postal-code" name="postal-code" inputmode="numeric" maxlength="4" value="1000" placeholder="Ex. 1000">
+                </div>
+                <div class="field">
+                  <label for="radius-km" data-i18n="search.radius">Rayon</label>
+                  <select id="radius-km" name="radius-km">
+                    <option value="15">15 km</option>
+                    <option value="25" selected>25 km</option>
+                    <option value="50">50 km</option>
+                    <option value="75">75 km</option>
+                  </select>
+                </div>
+              </div>
+              <button class="btn full" type="submit" data-i18n="search.submit">Chercher</button>
+              <div class="quick-codes" aria-label="Codes postaux rapides" data-i18n-aria-label="aria.quickCodes">
+                <button class="chip" type="button" data-postal="1000" data-i18n="city.brussels">Bruxelles</button>
+                <button class="chip" type="button" data-postal="2000" data-i18n="city.antwerp">Anvers</button>
+                <button class="chip" type="button" data-postal="9000" data-i18n="city.ghent">Gand</button>
+                <button class="chip" type="button" data-postal="4000" data-i18n="city.liege">Liège</button>
+              </div>
+              <p class="hint" data-i18n="search.hint">Base locale de démonstration, extensible vers Airtable ou un fichier éditorial.</p>
+            </form>
+
+            <div id="search-results" class="hero-results" aria-live="polite"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="section paper">
+        <div class="section-inner">
+          <div class="section-title">
+            <div>
+              <p class="eyebrow" data-i18n="home.adviceEyebrow">Avant de demander un prix</p>
+              <h2 data-i18n="home.adviceTitle">Un bon déménagement d'entreprise se prépare comme une opération.</h2>
+            </div>
+            <p class="muted" data-i18n="home.adviceLead">Les meilleurs devis sont comparables quand le périmètre est clair : volume, contraintes d'accès, continuité de service, matériel IT, archives et calendrier.</p>
+          </div>
+          <div class="grid-3">
+            <article class="info-card">
+              <strong data-i18n="home.card1Kicker">Cartographier</strong>
+              <h3 data-i18n="home.card1Title">Sites, étages, flux</h3>
+              <p class="muted" data-i18n="home.card1Text">Listez les implantations, les ascenseurs, les zones de chargement, les horaires autorisés et les postes critiques.</p>
+            </article>
+            <article class="info-card">
+              <strong data-i18n="home.card2Kicker">Comparer</strong>
+              <h3 data-i18n="home.card2Title">3 devis cohérents</h3>
+              <p class="muted" data-i18n="home.card2Text">Demandez les mêmes hypothèses à chaque déménageur : volume, distance, emballage, IT, assurance et week-end.</p>
+            </article>
+            <article class="info-card">
+              <strong data-i18n="home.card3Kicker">Orchestrer</strong>
+              <h3 data-i18n="home.card3Title">Planning de bascule</h3>
+              <p class="muted" data-i18n="home.card3Text">Préparez un plan par équipe, une communication interne, un étiquetage simple et un responsable par zone.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section dark">
+        <div class="section-inner section-title">
+          <div>
+            <p class="eyebrow">Go to the Point</p>
+            <h2 data-i18n="home.gttpTitle">Quand le choix du déménageur ne suffit pas, faites piloter le projet.</h2>
+          </div>
+          <div>
+            <p class="muted" data-i18n="home.gttpText">Go to the Point aide les entreprises à organiser le transfert : analyse, cahier des charges, coordination, communication et suivi du jour J.</p>
+            <a class="btn light" href="devis.html" data-i18n="home.gttpCta">Obtenir une estimation</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <div>
+          <img src="identity/logo-bm-white-200-62.png" alt="Business Move">
+          <p data-i18n="footer.baseline">Annuaire indépendant de déménageurs d'entreprise en Belgique.</p>
+        </div>
+        <div class="footer-links">
+          <a href="index.html" data-i18n="nav.directory">Annuaire</a>
+          <a href="organiser.html" data-i18n="footer.guide">Guide</a>
+          <a href="devis.html" data-i18n="nav.quote">Devis</a>
+          <a href="https://gotothepoint.eu">gotothepoint.eu</a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="data/movers.js"></script>
+    <script src="assets/site.js"></script>
+  </body>
+</html>
