@@ -10,6 +10,54 @@
     lastSearch: null
   };
 
+  const QUOTE_CONFIG = {
+    volumeRates: {
+      0: { maxKm: 15, low: 28, high: 36 },
+      1: { maxKm: 35, low: 32, high: 42 },
+      2: { maxKm: 75, low: 38, high: 50 },
+      3: { maxKm: Infinity, low: 45, high: 60 }
+    },
+    team: {
+      baseLow: 950,
+      baseHigh: 1350,
+      perPostLow: 32,
+      perPostHigh: 48
+    },
+    it: {
+      none: { low: 0, high: 0 },
+      standard: { low: 18, high: 30 },
+      advanced: { low: 35, high: 55 }
+    },
+    access: {
+      available: { baseLow: 0, baseHigh: 40, floorLow: 8, floorHigh: 14 },
+      narrow: { baseLow: 60, baseHigh: 140, floorLow: 14, floorHigh: 24 },
+      unavailable: { baseLow: 110, baseHigh: 220, floorLow: 22, floorHigh: 36 },
+      hoistRequired: { baseLow: 250, baseHigh: 320, floorLow: 0, floorHigh: 8 }
+    },
+    distance: {
+      baseLow: 18,
+      baseHigh: 30,
+      perKmLow: 2.8,
+      perKmHigh: 4.5
+    },
+    schedule: {
+      weekday: { low: 1.0, high: 1.0 },
+      saturday: { low: 1.25, high: 1.4 },
+      sundayHoliday: { low: 1.7, high: 2.0 },
+      evening: { low: 1.2, high: 1.35 }
+    },
+    providerRadius: {
+      25: { low: 1.0, high: 1.0 },
+      35: { low: 1.04, high: 1.08 },
+      50: { low: 1.07, high: 1.12 },
+      75: { low: 1.1, high: 1.15 }
+    },
+    minimums: {
+      low: 1800,
+      high: 2500
+    }
+  };
+
   const i18n = {
     fr: {
       "meta.title": "Business Move | Trouver un déménageur d'entreprise en Belgique",
@@ -60,8 +108,8 @@
       "search.email": "Email",
       "search.subject": "Demande de disponibilité - déménagement d'entreprise",
       "search.promoTitle": "Besoin d'orchestrer tout le transfert ?",
-      "search.promoText": "Go to the Point organise les déménagements d'entreprise de bout en bout : planning, cahier des charges, coordination des prestataires et bascule opérationnelle.",
-      "search.promoCta": "Calculer un devis",
+      "search.promoText": "Go to the Point organise les déménagements d'entreprise de bout en bout : planning, cahier des charges, aménagement, tri, inventaire, coordination des prestataires et bascule opérationnelle. Parmi ces opérations, le déménagement à proprement parlé représente un coût variable.",
+      "search.promoCta": "Estimer le coût",
       "organize.eyebrow": "Méthode",
       "organize.title": "Organiser votre déménagement sans bloquer l'activité.",
       "organize.lead": "Le déménageur exécute le transfert. L'entreprise doit d'abord cadrer le périmètre, préparer les équipes et protéger la continuité opérationnelle.",
@@ -81,13 +129,13 @@
       "organize.step5Title": "Vérifier le redémarrage",
       "organize.step5Text": "Contrôlez les postes critiques, les badges, les connexions, les imprimantes et la signalétique avant le retour des équipes.",
       "organize.promoTitle": "Besoin d'un chef de projet ?",
-      "organize.promoText": "Go to the Point peut prendre le rôle de coordinateur : cahier des charges, sélection des déménageurs, planning, communication interne et suivi du jour J.",
-      "organize.promoCta": "Préparer mon devis",
+      "organize.promoText": "Vous êtes une TPE, une PME ou une grande entreprise? Go to the Point prend en main 100% de l'organisaiton et de la coordination de votre déménagement d'entreprise : cahier des charges, plans, aménéagements, sélection des déménageurs, planning, coordination, suivi, présence au jour J et même after care!",
+      "organize.promoCta": "Contactez-nous sans tarder",
       "quote.eyebrow": "Devis & contacts",
       "quote.title": "Calculez une fourchette et préparez un email de demande.",
       "quote.lead": "Le calculateur estime le budget, sélectionne trois déménageurs proches du code postal d'origine et génère un email prêt à envoyer.",
       "quote.formTitle": "Paramètres du projet",
-      "quote.formHelp": "Les montants sont indicatifs et doivent être confirmés après visite technique.",
+      "quote.formHelp": "Les montants sont strictement indicatifs. Il ne peuvent en aucun cas être considérés comme des devis définitifs. Ces montant seront confirmés ou modifiés après visite technique.",
       "quote.company": "Entreprise",
       "quote.companyDefault": "Votre entreprise",
       "quote.email": "Email destinataire",
@@ -104,15 +152,25 @@
       "quote.it": "Matériel IT",
       "quote.included": "Inclus",
       "quote.notIncluded": "Non inclus",
+      "quote.accessAvailable": "Disponible",
+      "quote.accessNarrow": "Étroit / contraintes légères",
+      "quote.accessUnavailable": "Non disponible",
+      "quote.accessHoistRequired": "Monte-meuble requis",
+      "quote.itNone": "Non inclus",
+      "quote.itStandard": "Standard",
+      "quote.itAdvanced": "Avancé",
       "quote.timing": "Intervention",
       "quote.weekday": "En semaine",
       "quote.weekend": "Week-end ou hors heures",
+      "quote.saturday": "Samedi",
+      "quote.sundayHoliday": "Dimanche / jour férié",
+      "quote.evening": "Soirée",
       "quote.notes": "Notes",
       "quote.notesPlaceholder": "Contraintes d'accès, délai, sites multiples, stockage...",
       "quote.recalculate": "Recalculer",
       "quote.contactsTitle": "3 contacts proposés",
-      "quote.gttpTitle": "Coordination par Go to the Point",
-      "quote.gttpText": "Pour un appel d'offres propre et une bascule sans interruption, faites piloter le projet par une agence spécialisée en organisation de déménagement d'entreprise.",
+      "quote.gttpTitle": "Votre déménagement 100% sous contrôle",
+      "quote.gttpText": "Pour un appel d'offres propre et une bascule sans interruption, faites concevoir et piloter votre projet par une agence spécialisée en organisation de déménagement d'entreprise.",
       "quote.gttpCta": "Voir gotothepoint.eu",
       "quote.emailEyebrow": "Email automatique",
       "quote.emailTitle": "Envoyer l'estimation",
@@ -127,6 +185,14 @@
       "quote.breakDistance": "Distance",
       "quote.breakIt": "IT et postes",
       "quote.breakWeekend": "Intervention week-end",
+      "quote.breakSchedule": "Coefficient intervention",
+      "quote.breakProviderRadius": "Logistique prestataires",
+      "quote.breakMinimum": "Minimum de mission",
+      "quote.manualReviewTitle": "Revue manuelle conseillée",
+      "quote.flagNotes": "Notes spécifiques à vérifier",
+      "quote.flagLongDistance": "Distance longue",
+      "quote.flagDifficultAccess": "Accès bâtiment difficile",
+      "quote.flagAdvancedIt": "IT avancé",
       "email.hello": "Bonjour,",
       "email.intro": "Voici une estimation pour {company}.",
       "email.trip": "Trajet: {origin} vers {destination}",
@@ -186,8 +252,8 @@
       "search.email": "Email",
       "search.subject": "Beschikbaarheidsaanvraag - bedrijfsverhuis",
       "search.promoTitle": "Moet het hele traject gecoördineerd worden?",
-      "search.promoText": "Go to the Point organiseert bedrijfsverhuizingen van begin tot eind: planning, lastenboek, coördinatie van leveranciers en operationele omschakeling.",
-      "search.promoCta": "Offerte berekenen",
+      "search.promoText": "Go to the Point organiseert bedrijfsverhuizingen van begin tot eind: planning, lastenboek, inrichting, sortering, inventaris, coördinatie van leveranciers en operationele omschakeling. Binnen die operaties vertegenwoordigt de verhuis zelf een variabele kost.",
+      "search.promoCta": "Kost inschatten",
       "organize.eyebrow": "Methode",
       "organize.title": "Organiseer uw verhuis zonder de activiteit te blokkeren.",
       "organize.lead": "De verhuizer voert de verhuis uit. Het bedrijf moet eerst de scope vastleggen, de teams voorbereiden en de operationele continuïteit beschermen.",
@@ -207,13 +273,13 @@
       "organize.step5Title": "De herstart controleren",
       "organize.step5Text": "Controleer kritieke werkplekken, badges, verbindingen, printers en signalisatie voor de teams terugkomen.",
       "organize.promoTitle": "Een projectleider nodig?",
-      "organize.promoText": "Go to the Point kan de coördinatie opnemen: lastenboek, selectie van verhuizers, planning, interne communicatie en opvolging op de verhuisdag.",
-      "organize.promoCta": "Mijn offerte voorbereiden",
+      "organize.promoText": "Bent u een micro-onderneming, kmo of grote onderneming? Go to the Point neemt 100% van de organisatie en coördinatie van uw bedrijfsverhuis in handen: lastenboek, plannen, inrichting, selectie van verhuizers, planning, coördinatie, opvolging, aanwezigheid op de verhuisdag en zelfs aftercare!",
+      "organize.promoCta": "Neem meteen contact op",
       "quote.eyebrow": "Offerte & contacten",
       "quote.title": "Bereken een prijsvork en bereid een aanvraagmail voor.",
       "quote.lead": "De calculator schat het budget, selecteert drie verhuizers dicht bij de vertrekpostcode en genereert een mail die klaar is om te verzenden.",
       "quote.formTitle": "Projectparameters",
-      "quote.formHelp": "Bedragen zijn indicatief en moeten na een technisch bezoek worden bevestigd.",
+      "quote.formHelp": "De bedragen zijn strikt indicatief. Ze mogen in geen geval worden beschouwd als definitieve offertes. Deze bedragen worden bevestigd of aangepast na een technisch bezoek.",
       "quote.company": "Bedrijf",
       "quote.companyDefault": "Uw bedrijf",
       "quote.email": "Ontvanger email",
@@ -230,15 +296,25 @@
       "quote.it": "IT-materiaal",
       "quote.included": "Inbegrepen",
       "quote.notIncluded": "Niet inbegrepen",
+      "quote.accessAvailable": "Beschikbaar",
+      "quote.accessNarrow": "Smal / lichte beperkingen",
+      "quote.accessUnavailable": "Niet beschikbaar",
+      "quote.accessHoistRequired": "Verhuislift vereist",
+      "quote.itNone": "Niet inbegrepen",
+      "quote.itStandard": "Standaard",
+      "quote.itAdvanced": "Geavanceerd",
       "quote.timing": "Interventie",
       "quote.weekday": "Tijdens de week",
       "quote.weekend": "Weekend of buiten uren",
+      "quote.saturday": "Zaterdag",
+      "quote.sundayHoliday": "Zondag / feestdag",
+      "quote.evening": "Avond",
       "quote.notes": "Notities",
       "quote.notesPlaceholder": "Toegang, timing, meerdere sites, opslag...",
       "quote.recalculate": "Herberekenen",
       "quote.contactsTitle": "3 voorgestelde contacten",
-      "quote.gttpTitle": "Coördinatie door Go to the Point",
-      "quote.gttpText": "Voor een helder aanbestedingsproces en een omschakeling zonder onderbreking kan een gespecialiseerd bureau het project aansturen.",
+      "quote.gttpTitle": "Uw verhuis 100% onder controle",
+      "quote.gttpText": "Voor een helder aanbestedingsproces en een omschakeling zonder onderbreking laat u uw project ontwerpen en aansturen door een gespecialiseerd bureau in de organisatie van bedrijfsverhuizingen.",
       "quote.gttpCta": "Bekijk gotothepoint.eu",
       "quote.emailEyebrow": "Automatische email",
       "quote.emailTitle": "De raming verzenden",
@@ -253,6 +329,14 @@
       "quote.breakDistance": "Afstand",
       "quote.breakIt": "IT en werkplekken",
       "quote.breakWeekend": "Weekendinterventie",
+      "quote.breakSchedule": "Interventiecoëfficiënt",
+      "quote.breakProviderRadius": "Leverancierslogistiek",
+      "quote.breakMinimum": "Minimumopdracht",
+      "quote.manualReviewTitle": "Manuele controle aanbevolen",
+      "quote.flagNotes": "Specifieke notities te controleren",
+      "quote.flagLongDistance": "Lange afstand",
+      "quote.flagDifficultAccess": "Moeilijke toegang gebouw",
+      "quote.flagAdvancedIt": "Geavanceerde IT",
       "email.hello": "Hallo,",
       "email.intro": "Hier is een raming voor {company}.",
       "email.trip": "Traject: {origin} naar {destination}",
@@ -312,8 +396,8 @@
       "search.email": "Email",
       "search.subject": "Availability request - corporate move",
       "search.promoTitle": "Need the whole transfer orchestrated?",
-      "search.promoText": "Go to the Point organises corporate moves end to end: planning, specifications, provider coordination and operational switch-over.",
-      "search.promoCta": "Calculate a quote",
+      "search.promoText": "Go to the Point organises corporate moves end to end: planning, specifications, fit-out, sorting, inventory, provider coordination and operational switch-over. Within these operations, the move itself represents a variable cost.",
+      "search.promoCta": "Estimate the cost",
       "organize.eyebrow": "Method",
       "organize.title": "Organise your move without blocking activity.",
       "organize.lead": "The mover executes the transfer. The company must first define the scope, prepare teams and protect operational continuity.",
@@ -333,13 +417,13 @@
       "organize.step5Title": "Check the restart",
       "organize.step5Text": "Check critical workstations, badges, connections, printers and signage before teams return.",
       "organize.promoTitle": "Need a project manager?",
-      "organize.promoText": "Go to the Point can coordinate the specifications, mover selection, planning, internal communication and move-day follow-up.",
-      "organize.promoCta": "Prepare my quote",
+      "organize.promoText": "Whether you are a micro-business, SME or large company, Go to the Point takes care of 100% of the organisation and coordination of your corporate move: specifications, plans, fit-out, mover selection, planning, coordination, follow-up, presence on move day and even aftercare!",
+      "organize.promoCta": "Contact us without delay",
       "quote.eyebrow": "Quote & contacts",
       "quote.title": "Calculate a price range and prepare a request email.",
       "quote.lead": "The calculator estimates the budget, selects three movers near the origin postcode and generates an email ready to send.",
       "quote.formTitle": "Project parameters",
-      "quote.formHelp": "Amounts are indicative and must be confirmed after a technical visit.",
+      "quote.formHelp": "Amounts are strictly indicative. They cannot under any circumstances be considered final quotes. These amounts will be confirmed or amended after a technical visit.",
       "quote.company": "Company",
       "quote.companyDefault": "Your company",
       "quote.email": "Recipient email",
@@ -356,15 +440,25 @@
       "quote.it": "IT equipment",
       "quote.included": "Included",
       "quote.notIncluded": "Not included",
+      "quote.accessAvailable": "Available",
+      "quote.accessNarrow": "Narrow / light constraints",
+      "quote.accessUnavailable": "Unavailable",
+      "quote.accessHoistRequired": "Hoist required",
+      "quote.itNone": "Not included",
+      "quote.itStandard": "Standard",
+      "quote.itAdvanced": "Advanced",
       "quote.timing": "Timing",
       "quote.weekday": "Weekday",
       "quote.weekend": "Weekend or out of hours",
+      "quote.saturday": "Saturday",
+      "quote.sundayHoliday": "Sunday / public holiday",
+      "quote.evening": "Evening",
       "quote.notes": "Notes",
       "quote.notesPlaceholder": "Access constraints, timing, multiple sites, storage...",
       "quote.recalculate": "Recalculate",
       "quote.contactsTitle": "3 suggested contacts",
-      "quote.gttpTitle": "Coordination by Go to the Point",
-      "quote.gttpText": "For a clean tender process and a switch-over without interruption, have the project managed by a specialist corporate move organisation agency.",
+      "quote.gttpTitle": "Your move 100% under control",
+      "quote.gttpText": "For a clean tender process and a switch-over without interruption, have your project designed and managed by a specialist corporate move organisation agency.",
       "quote.gttpCta": "View gotothepoint.eu",
       "quote.emailEyebrow": "Automatic email",
       "quote.emailTitle": "Send the estimate",
@@ -379,6 +473,14 @@
       "quote.breakDistance": "Distance",
       "quote.breakIt": "IT and workstations",
       "quote.breakWeekend": "Weekend intervention",
+      "quote.breakSchedule": "Timing coefficient",
+      "quote.breakProviderRadius": "Provider logistics",
+      "quote.breakMinimum": "Minimum project fee",
+      "quote.manualReviewTitle": "Manual review advised",
+      "quote.flagNotes": "Specific notes to review",
+      "quote.flagLongDistance": "Long distance",
+      "quote.flagDifficultAccess": "Difficult building access",
+      "quote.flagAdvancedIt": "Advanced IT",
       "email.hello": "Hello,",
       "email.intro": "Here is an estimate for {company}.",
       "email.trip": "Route: {origin} to {destination}",
@@ -651,41 +753,130 @@
     renderSearchResults("search-results", postalInput.value || "1000", Number(radiusInput.value || 25), 3);
   }
 
-  function calculateQuote(values) {
-    const workstations = Number(values.get("workstations") || 0);
-    const volume = Number(values.get("volume") || 0);
-    const floors = Number(values.get("floors") || 0);
-    const hasLift = values.get("lift") === "yes";
-    const itMove = values.get("it") === "yes";
-    const weekend = values.get("weekend") === "yes";
+  function roundToTen(value) {
+    return Math.round(value / 10) * 10;
+  }
+
+  function numberFromForm(values, key) {
+    return Math.max(0, Number(values.get(key) || 0));
+  }
+
+  function selectVolumeRate(distance) {
+    return Object.values(QUOTE_CONFIG.volumeRates).find((rate) => distance <= rate.maxKm);
+  }
+
+  function selectProviderRadiusRate(radius) {
+    return QUOTE_CONFIG.providerRadius[radius] || QUOTE_CONFIG.providerRadius[35];
+  }
+
+  function quoteRange(label, low, high) {
+    return {
+      label,
+      low: roundToTen(low),
+      high: roundToTen(high)
+    };
+  }
+
+  function sumRanges(blocks) {
+    return blocks.reduce(
+      (total, block) => ({
+        low: total.low + block.low,
+        high: total.high + block.high
+      }),
+      { low: 0, high: 0 }
+    );
+  }
+
+  function calculateTripDistance(values) {
     const originCode = normalizePostalCode(values.get("origin"));
     const destinationCode = normalizePostalCode(values.get("destination"));
     const origin = postalLookup(originCode);
     const destination = postalLookup(destinationCode);
-    const tripDistance = origin && destination ? Math.max(8, distanceKm(origin, destination)) : 25;
+    return origin && destination ? Math.max(8, distanceKm(origin, destination)) : 25;
+  }
 
-    const base = 680;
-    const labor = workstations * 62;
-    const handling = volume * 34;
-    const access = hasLift ? floors * 55 : floors * 160;
-    const travel = tripDistance * 5.8;
-    const it = itMove ? workstations * 28 + 290 : 0;
-    const timing = weekend ? (base + labor + handling + access + travel + it) * 0.18 : 0;
-    const low = Math.round((base + labor + handling + access + travel + it + timing) * 0.9);
-    const high = Math.round((base + labor + handling + access + travel + it + timing) * 1.18);
+  function calculateManualFlags(values, tripDistance, accessType, itLevel) {
+    const flags = [];
+    if (String(values.get("notes") || "").trim()) flags.push("quote.flagNotes");
+    if (tripDistance > 75) flags.push("quote.flagLongDistance");
+    if (["narrow", "unavailable", "hoistRequired"].includes(accessType)) flags.push("quote.flagDifficultAccess");
+    if (itLevel === "advanced") flags.push("quote.flagAdvancedIt");
+    return flags;
+  }
+
+  function calculateQuote(values) {
+    const workstations = numberFromForm(values, "workstations");
+    const volume = numberFromForm(values, "volume");
+    const floors = numberFromForm(values, "floors");
+    const providerRadius = Number(values.get("radius") || 35);
+    const accessType = { yes: "available", no: "unavailable" }[values.get("lift")] || values.get("lift") || "available";
+    const itLevel = { yes: "standard", no: "none" }[values.get("it")] || values.get("it") || "standard";
+    const scheduleType = { yes: "saturday", no: "weekday" }[values.get("weekend")] || values.get("weekend") || "weekday";
+    const tripDistance = calculateTripDistance(values);
+    const volumeRate = selectVolumeRate(tripDistance);
+    const accessRate = QUOTE_CONFIG.access[accessType] || QUOTE_CONFIG.access.available;
+    const itRate = QUOTE_CONFIG.it[itLevel] || QUOTE_CONFIG.it.standard;
+    const scheduleRate = QUOTE_CONFIG.schedule[scheduleType] || QUOTE_CONFIG.schedule.weekday;
+    const providerRate = selectProviderRadiusRate(providerRadius);
+
+    const baseBlocks = [
+      quoteRange(
+        "quote.breakPreparation",
+        QUOTE_CONFIG.team.baseLow + workstations * QUOTE_CONFIG.team.perPostLow,
+        QUOTE_CONFIG.team.baseHigh + workstations * QUOTE_CONFIG.team.perPostHigh
+      ),
+      quoteRange("quote.breakVolume", volume * volumeRate.low, volume * volumeRate.high),
+      quoteRange(
+        "quote.breakAccess",
+        accessRate.baseLow + floors * accessRate.floorLow,
+        accessRate.baseHigh + floors * accessRate.floorHigh
+      ),
+      quoteRange(
+        "quote.breakDistance",
+        QUOTE_CONFIG.distance.baseLow + tripDistance * QUOTE_CONFIG.distance.perKmLow,
+        QUOTE_CONFIG.distance.baseHigh + tripDistance * QUOTE_CONFIG.distance.perKmHigh
+      ),
+      quoteRange("quote.breakIt", workstations * itRate.low, workstations * itRate.high)
+    ].filter((block) => block.low > 0 || block.high > 0);
+
+    const baseTotal = sumRanges(baseBlocks);
+    const providerBlock = quoteRange(
+      "quote.breakProviderRadius",
+      baseTotal.low * (providerRate.low - 1),
+      baseTotal.high * (providerRate.high - 1)
+    );
+    const providerAdjusted = {
+      low: baseTotal.low + providerBlock.low,
+      high: baseTotal.high + providerBlock.high
+    };
+    const scheduleBlock = quoteRange(
+      "quote.breakSchedule",
+      providerAdjusted.low * (scheduleRate.low - 1),
+      providerAdjusted.high * (scheduleRate.high - 1)
+    );
+
+    const blocks = [
+      ...baseBlocks,
+      providerBlock,
+      scheduleBlock
+    ].filter((block) => block.low > 0 || block.high > 0);
+
+    const subtotal = sumRanges(blocks);
+    const low = Math.max(subtotal.low, QUOTE_CONFIG.minimums.low);
+    const high = Math.max(subtotal.high, QUOTE_CONFIG.minimums.high);
+    const minimumBlock = quoteRange(
+      "quote.breakMinimum",
+      low - subtotal.low,
+      high - subtotal.high
+    );
+    if (minimumBlock.low > 0 || minimumBlock.high > 0) blocks.push(minimumBlock);
 
     return {
-      low,
-      high,
+      low: roundToTen(low),
+      high: roundToTen(high),
       tripDistance,
-      breakdown: [
-        ["quote.breakPreparation", base + labor],
-        ["quote.breakVolume", handling],
-        ["quote.breakAccess", access],
-        ["quote.breakDistance", travel],
-        ["quote.breakIt", it],
-        ["quote.breakWeekend", timing]
-      ].filter((item) => item[1] > 0)
+      flags: calculateManualFlags(values, tripDistance, accessType, itLevel),
+      breakdown: blocks
     };
   }
 
@@ -697,6 +888,9 @@
       selectedMovers
         .map((mover, index) => `${index + 1}. ${mover.name} - ${mover.email} - ${mover.phone}`)
         .join("\n") || t("email.noMover");
+    const manualReviewText = quote.flags.length
+      ? `\n${t("quote.manualReviewTitle")}:\n${quote.flags.map((flag) => `- ${t(flag)}`).join("\n")}\n`
+      : "";
 
     return `${t("email.hello")}
 
@@ -709,6 +903,7 @@ ${t("email.range", { low: euro(quote.low), high: euro(quote.high) })}
 
 ${t("email.movers")}
 ${moversText}
+${manualReviewText}
 
 ${t("email.note")}
 `;
@@ -733,14 +928,25 @@ ${t("email.note")}
         if (selectedMovers.length < 3 && !alreadySelected) selectedMovers.push(mover);
       });
     }
+    const flags = quote.flags.length
+      ? `
+        <div class="quote-flags">
+          <strong>${t("quote.manualReviewTitle")}</strong>
+          <ul>
+            ${quote.flags.map((flag) => `<li>${t(flag)}</li>`).join("")}
+          </ul>
+        </div>
+      `
+      : "";
 
     output.innerHTML = `
       <p class="eyebrow">${t("quote.estimate")}</p>
       <div class="price-total">${euro(quote.low)} - ${euro(quote.high)}</div>
       <p class="microcopy">${t("quote.distance", { distance: quote.tripDistance.toFixed(1) })}</p>
       <ul class="quote-breakdown">
-        ${quote.breakdown.map(([label, value]) => `<li><span>${t(label)}</span><strong>${euro(value)}</strong></li>`).join("")}
+        ${quote.breakdown.map((block) => `<li><span>${t(block.label)}</span><strong>${euro(block.low)} - ${euro(block.high)}</strong></li>`).join("")}
       </ul>
+      ${flags}
     `;
 
     moversOutput.innerHTML = selectedMovers.length

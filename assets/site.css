@@ -211,9 +211,7 @@ textarea {
   content: "";
   position: absolute;
   inset: 0;
-  background:
-    var(--hero-gradient),
-    url("../identity/logo_bm_transparent_white_512-dans-800-fondgris.png") right 7vw center / min(45vw, 560px) no-repeat;
+  background: var(--hero-gradient);
   opacity: 0.98;
 }
 
@@ -416,7 +414,11 @@ h3 {
 }
 
 .section.dark {
-  background: var(--dark);
+  background: #404c1d;
+  color: #fff;
+}
+
+.section.dark .eyebrow {
   color: #fff;
 }
 
@@ -503,6 +505,26 @@ h3 {
   color: #fff;
 }
 
+.promo .microcopy {
+  color: #fff;
+}
+
+.soft-panel.promo.gttp-promo {
+  background: #404c1d;
+}
+
+.gttp-promo .microcopy {
+  color: #fff;
+}
+
+.soft-panel.promo.quote-gttp-promo {
+  background: #404c1d;
+}
+
+.quote-gttp-promo .microcopy {
+  color: #fff;
+}
+
 .promo img {
   width: 170px;
   height: auto;
@@ -568,6 +590,26 @@ h3 {
   padding-bottom: 8px;
 }
 
+.quote-flags {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 8px;
+  margin-top: 18px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.quote-flags strong {
+  display: block;
+  margin-bottom: 8px;
+}
+
+.quote-flags ul {
+  display: grid;
+  gap: 5px;
+  margin: 0;
+  padding-left: 18px;
+}
+
 .email-preview {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -581,7 +623,7 @@ h3 {
 
 .footer-inner {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   gap: 24px;
   align-items: center;
 }
@@ -596,6 +638,36 @@ h3 {
   flex-wrap: wrap;
   gap: 14px;
   font-size: 14px;
+}
+
+.footer-socials {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-socials a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 4px;
+  color: #fff;
+  transition: background 180ms ease, border 180ms ease, transform 180ms ease;
+}
+
+.footer-socials a:hover {
+  border-color: rgba(255, 255, 255, 0.48);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-1px);
+}
+
+.footer-socials svg {
+  width: 17px;
+  height: 17px;
+  fill: currentColor;
 }
 
 .notice {
