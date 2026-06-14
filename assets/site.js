@@ -50,7 +50,9 @@
       25: { low: 1.0, high: 1.0 },
       35: { low: 1.04, high: 1.08 },
       50: { low: 1.07, high: 1.12 },
-      75: { low: 1.1, high: 1.15 }
+      75: { low: 1.1, high: 1.15 },
+      100: { low: 1.13, high: 1.18 },
+      125: { low: 1.16, high: 1.22 }
     },
     minimums: {
       low: 1800,
@@ -92,7 +94,7 @@
       "home.card3Kicker": "Orchestrer",
       "home.card3Title": "Planning de bascule",
       "home.card3Text": "Préparez un plan par équipe, une communication interne, un étiquetage simple et un responsable par zone.",
-      "home.gttpTitle": "Quand le choix du déménageur ne suffit pas, faites piloter le projet.",
+      "home.gttpTitle": "Le choix de votre déménageur ne suffit pas: faites piloter votre projet par des pros!",
       "home.gttpText": "Go to the Point aide les entreprises à organiser le transfert : analyse, cahier des charges, coordination, communication et suivi du jour J.",
       "home.gttpCta": "Obtenir une estimation",
       "search.title": "Recherche locale",
@@ -107,8 +109,8 @@
       "search.contact": "Contacter",
       "search.email": "Email",
       "search.subject": "Demande de disponibilité - déménagement d'entreprise",
-      "search.promoTitle": "Besoin d'orchestrer tout le transfert ?",
-      "search.promoText": "Go to the Point organise les déménagements d'entreprise de bout en bout : planning, cahier des charges, aménagement, tri, inventaire, coordination des prestataires et bascule opérationnelle. Parmi ces opérations, le déménagement à proprement parlé représente un coût variable.",
+      "search.promoTitle": "Besoin d'une idée de prix? ",
+      "search.promoText": "Notre calculateur vous permet d'évaluer le coût de transport. Ce prix ne comprend pas tous les services qui seront nécessaires à la réussite de votre déménagement B2B mais c'est une base de réflexion. Pour un prix global réaliste, contactez l'agence Go to the Point. ",
       "search.promoCta": "Estimer le coût",
       "organize.eyebrow": "Méthode",
       "organize.title": "Organiser votre déménagement sans bloquer l'activité.",
@@ -132,8 +134,8 @@
       "organize.promoText": "Vous êtes une TPE, une PME ou une grande entreprise? Go to the Point prend en main 100% de l'organisaiton et de la coordination de votre déménagement d'entreprise : cahier des charges, plans, aménéagements, sélection des déménageurs, planning, coordination, suivi, présence au jour J et même after care!",
       "organize.promoCta": "Contactez-nous sans tarder",
       "quote.eyebrow": "Devis & contacts",
-      "quote.title": "Calculez une fourchette et préparez un email de demande.",
-      "quote.lead": "Le calculateur estime le budget, sélectionne trois déménageurs proches du code postal d'origine et génère un email prêt à envoyer.",
+      "quote.title": "Estimez le coût de votre déménagement d'entreprise et préparez un email de demande.",
+      "quote.lead": "Le calculateur crée une fourchette de prix approximatifs, sélectionne trois déménageurs proches du code postal d'origine et génère un email prêt à envoyer.",
       "quote.formTitle": "Paramètres du projet",
       "quote.formHelp": "Les montants sont strictement indicatifs. Il ne peuvent en aucun cas être considérés comme des devis définitifs. Ces montant seront confirmés ou modifiés après visite technique.",
       "quote.company": "Entreprise",
@@ -177,7 +179,7 @@
       "quote.emailCta": "Ouvrir l'email",
       "quote.estimate": "Estimation indicative",
       "quote.distance": "Distance estimée : {distance} km. Prix à confirmer après visite technique.",
-      "quote.noMover": "Aucun déménageur trouvé dans ce rayon. Essayez 50 km ou 75 km.",
+      "quote.noMover": "Aucun déménageur trouvé dans ce rayon. Essayez 50 km, 75 km, 100 km ou 125 km.",
       "quote.emailSubject": "Votre estimation de déménagement d'entreprise",
       "quote.breakPreparation": "Préparation et équipe",
       "quote.breakVolume": "Volume mobilier",
@@ -321,7 +323,7 @@
       "quote.emailCta": "Email openen",
       "quote.estimate": "Indicatieve raming",
       "quote.distance": "Geschatte afstand: {distance} km. Prijs te bevestigen na technisch bezoek.",
-      "quote.noMover": "Geen verhuizer gevonden binnen deze straal. Probeer 50 km of 75 km.",
+      "quote.noMover": "Geen verhuizer gevonden binnen deze straal. Probeer 50 km, 75 km, 100 km of 125 km.",
       "quote.emailSubject": "Uw raming voor een bedrijfsverhuis",
       "quote.breakPreparation": "Voorbereiding en team",
       "quote.breakVolume": "Volume meubilair",
@@ -465,7 +467,7 @@
       "quote.emailCta": "Open email",
       "quote.estimate": "Indicative estimate",
       "quote.distance": "Estimated distance: {distance} km. Price to be confirmed after a technical visit.",
-      "quote.noMover": "No mover found within this radius. Try 50 km or 75 km.",
+      "quote.noMover": "No mover found within this radius. Try 50 km, 75 km, 100 km or 125 km.",
       "quote.emailSubject": "Your corporate move estimate",
       "quote.breakPreparation": "Preparation and crew",
       "quote.breakVolume": "Furniture volume",
@@ -577,6 +579,19 @@
       maximumFractionDigits: 0
     }).format(value);
 
+  function formatMoverDistance(mover, originPostalCode) {
+    const moverPostalCode = normalizePostalCode(mover.postalCode);
+    const normalizedOrigin = normalizePostalCode(originPostalCode);
+    const samePostalCode = moverPostalCode && moverPostalCode === normalizedOrigin;
+    const approximate =
+      mover.coordSource === "approx" ||
+      (mover.coordPostalCode && normalizePostalCode(mover.coordPostalCode) !== moverPostalCode);
+
+    if (mover.distance < 0.05 && samePostalCode) return "0 km";
+    if (mover.distance < 1) return `${approximate ? "≈ " : ""}< 1 km`;
+    return `${approximate ? "≈ " : ""}${mover.distance.toFixed(1)} km`;
+  }
+
   function distanceKm(a, b) {
     const radius = 6371;
     const dLat = ((b.lat - a.lat) * Math.PI) / 180;
@@ -668,6 +683,7 @@
       : "Website";
     const rating = mover.rating ? `<span class="pill">${mover.rating}/5</span>` : "";
     const phone = mover.phone ? `<p class="microcopy">${mover.phone}</p>` : "";
+    const distanceLabel = formatMoverDistance(mover, options.originPostalCode);
 
     return `
       <article class="result-card">
@@ -683,7 +699,7 @@
           </div>
         </div>
         <div>
-          <p class="distance">${mover.distance.toFixed(1)} km</p>
+          <p class="distance">${distanceLabel}</p>
           <a class="btn secondary" href="${contactLink}">${contactLabel}</a>
         </div>
       </article>
@@ -716,7 +732,7 @@
             plural: limited.length > 1 ? "s" : "",
             city: localizeMover(origin.city)
           })}</p>
-          <div class="results-list">${limited.map((mover) => renderMoverCard(mover)).join("")}</div>
+          <div class="results-list">${limited.map((mover) => renderMoverCard(mover, { originPostalCode: normalized })).join("")}</div>
         </div>
         <aside class="soft-panel promo">
           <img src="identity/logo-bm-white-200-62.png" alt="Business Move">
@@ -949,8 +965,9 @@ ${t("email.note")}
       ${flags}
     `;
 
+    const originPostalCode = normalizePostalCode(values.get("origin"));
     moversOutput.innerHTML = selectedMovers.length
-      ? selectedMovers.map((mover) => renderMoverCard(mover, { short: true })).join("")
+      ? selectedMovers.map((mover) => renderMoverCard(mover, { short: true, originPostalCode })).join("")
       : `<div class="notice">${t("quote.noMover")}</div>`;
 
     const email = buildQuoteEmail(values, quote, selectedMovers);
