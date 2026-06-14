@@ -134,7 +134,7 @@
       "organize.promoText": "Vous êtes une TPE, une PME ou une grande entreprise? Go to the Point prend en main 100% de l'organisaiton et de la coordination de votre déménagement d'entreprise : cahier des charges, plans, aménéagements, sélection des déménageurs, planning, coordination, suivi, présence au jour J et même after care!",
       "organize.promoCta": "Contactez-nous sans tarder",
       "quote.eyebrow": "Devis & contacts",
-      "quote.title": "Estimez le coût de votre déménagement d'entreprise et préparez un email de demande.",
+      "quote.title": "Estimez le coût de transport de votre déménagement d'entreprise et préparez un email de demande.",
       "quote.lead": "Le calculateur crée une fourchette de prix approximatifs, sélectionne trois déménageurs proches du code postal d'origine et génère un email prêt à envoyer.",
       "quote.formTitle": "Paramètres du projet",
       "quote.formHelp": "Les montants sont strictement indicatifs. Il ne peuvent en aucun cas être considérés comme des devis définitifs. Ces montant seront confirmés ou modifiés après visite technique.",
