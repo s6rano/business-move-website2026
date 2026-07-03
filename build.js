@@ -29,6 +29,13 @@ const HREF_TO_PAGE = {
   "devis.html": "quote"
 };
 
+// Anciennes URL (avant la refonte multilingue) a rediriger vers les nouvelles
+// pages FR equivalentes (l'ancien site servait le francais par defaut).
+const REDIRECTS = {
+  "organiser.html": { toPage: "organize", lang: "fr" },
+  "devis.html": { toPage: "quote", lang: "fr" }
+};
+
 function pageById(id) {
   return pages.find((p) => p.id === id);
 }
@@ -200,6 +207,25 @@ function buildRobots() {
   return `User-agent: *\nAllow: /\n\nSitemap: ${BASE_URL}/sitemap.xml\n`;
 }
 
+// Page-relais pour une ancienne URL : GitHub Pages ne gere pas les 301 serveur,
+// on combine canonical (signal SEO), meta refresh et redirection JS.
+function buildRedirectStub(targetUrl) {
+  return `<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <title>Business Move</title>
+    <link rel="canonical" href="${BASE_URL}${targetUrl}">
+    <meta http-equiv="refresh" content="0; url=${targetUrl}">
+    <script>window.location.replace("${targetUrl}");</script>
+  </head>
+  <body>
+    <p>Cette page a été déplacée. <a href="${targetUrl}">Continuer vers la nouvelle adresse</a>.</p>
+  </body>
+</html>
+`;
+}
+
 function main() {
   // Dictionnaire consommable par le navigateur.
   writeFileSafe(
@@ -221,7 +247,17 @@ function main() {
   writeFileSafe(path.join(ROOT, "sitemap.xml"), buildSitemap());
   writeFileSafe(path.join(ROOT, "robots.txt"), buildRobots());
 
-  console.log(`OK : ${count} pages generees + racine + sitemap.xml + robots.txt + assets/i18n.js`);
+  // Redirections des anciennes URL.
+  let redirectCount = 0;
+  Object.keys(REDIRECTS).forEach((oldPath) => {
+    const r = REDIRECTS[oldPath];
+    writeFileSafe(path.join(ROOT, oldPath), buildRedirectStub(pageUrl(r.toPage, r.lang)));
+    redirectCount += 1;
+  });
+
+  console.log(
+    `OK : ${count} pages generees + racine + ${redirectCount} redirections + sitemap.xml + robots.txt + assets/i18n.js`
+  );
 }
 
 main();
