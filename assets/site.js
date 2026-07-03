@@ -145,7 +145,7 @@
       "quote.origin": "Code postal départ",
       "quote.destination": "Code postal arrivée",
       "quote.workstations": "Postes de travail",
-      "quote.volume": "Volume estimé",
+      "quote.volume": "Volume estimé (m³)",
       "quote.floors": "Étages contraints",
       "quote.radius": "Rayon prestataires",
       "quote.lift": "Ascenseur / monte-charge",
@@ -178,7 +178,10 @@
       "quote.emailTitle": "Envoyer l'estimation",
       "quote.emailCta": "Ouvrir l'email",
       "quote.estimate": "Estimation indicative",
-      "quote.distance": "Distance estimée : {distance} km. Prix à confirmer après visite technique.",
+      "quote.distance": "Distance estimée : {distance}. Prix à confirmer après visite technique.",
+      "distance.under": "Moins de {max} km",
+      "distance.between": "Entre {min} et {max} km",
+      "distance.over": "Plus de {min} km",
       "quote.noMover": "Aucun déménageur trouvé dans ce rayon. Essayez 50 km, 75 km, 100 km ou 125 km.",
       "quote.emailSubject": "Votre estimation de déménagement d'entreprise",
       "quote.breakPreparation": "Préparation et équipe",
@@ -289,7 +292,7 @@
       "quote.origin": "Vertrekpostcode",
       "quote.destination": "Aankomstpostcode",
       "quote.workstations": "Werkplekken",
-      "quote.volume": "Geschat volume",
+      "quote.volume": "Geschat volume (m³)",
       "quote.floors": "Moeilijke verdiepingen",
       "quote.radius": "Straal leveranciers",
       "quote.lift": "Lift / goederenlift",
@@ -322,7 +325,10 @@
       "quote.emailTitle": "De raming verzenden",
       "quote.emailCta": "Email openen",
       "quote.estimate": "Indicatieve raming",
-      "quote.distance": "Geschatte afstand: {distance} km. Prijs te bevestigen na technisch bezoek.",
+      "quote.distance": "Geschatte afstand: {distance}. Prijs te bevestigen na technisch bezoek.",
+      "distance.under": "Minder dan {max} km",
+      "distance.between": "Tussen {min} en {max} km",
+      "distance.over": "Meer dan {min} km",
       "quote.noMover": "Geen verhuizer gevonden binnen deze straal. Probeer 50 km, 75 km, 100 km of 125 km.",
       "quote.emailSubject": "Uw raming voor een bedrijfsverhuis",
       "quote.breakPreparation": "Voorbereiding en team",
@@ -433,7 +439,7 @@
       "quote.origin": "Origin postcode",
       "quote.destination": "Destination postcode",
       "quote.workstations": "Workstations",
-      "quote.volume": "Estimated volume",
+      "quote.volume": "Estimated volume (m³)",
       "quote.floors": "Constrained floors",
       "quote.radius": "Provider radius",
       "quote.lift": "Lift / goods lift",
@@ -466,7 +472,10 @@
       "quote.emailTitle": "Send the estimate",
       "quote.emailCta": "Open email",
       "quote.estimate": "Indicative estimate",
-      "quote.distance": "Estimated distance: {distance} km. Price to be confirmed after a technical visit.",
+      "quote.distance": "Estimated distance: {distance}. Price to be confirmed after a technical visit.",
+      "distance.under": "Under {max} km",
+      "distance.between": "Between {min} and {max} km",
+      "distance.over": "Over {min} km",
       "quote.noMover": "No mover found within this radius. Try 50 km, 75 km, 100 km or 125 km.",
       "quote.emailSubject": "Your corporate move estimate",
       "quote.breakPreparation": "Preparation and crew",
@@ -579,17 +588,26 @@
       maximumFractionDigits: 0
     }).format(value);
 
-  function formatMoverDistance(mover, originPostalCode) {
-    const moverPostalCode = normalizePostalCode(mover.postalCode);
-    const normalizedOrigin = normalizePostalCode(originPostalCode);
-    const samePostalCode = moverPostalCode && moverPostalCode === normalizedOrigin;
-    const approximate =
-      mover.coordSource === "approx" ||
-      (mover.coordPostalCode && normalizePostalCode(mover.coordPostalCode) !== moverPostalCode);
+  // Affichage de la distance par fourchettes (paliers) plutôt qu'en décimales.
+  // Une estimation à vol d'oiseau corrigée reste approximative : les paliers
+  // communiquent honnêtement cette imprécision.
+  function distanceBracket(km) {
+    if (km < 5) return { key: "distance.under", vars: { max: 5 } };
+    if (km < 10) return { key: "distance.between", vars: { min: 5, max: 10 } };
+    if (km < 20) return { key: "distance.between", vars: { min: 10, max: 20 } };
+    if (km < 30) return { key: "distance.between", vars: { min: 20, max: 30 } };
+    if (km < 50) return { key: "distance.between", vars: { min: 30, max: 50 } };
+    if (km < 75) return { key: "distance.between", vars: { min: 50, max: 75 } };
+    return { key: "distance.over", vars: { min: 75 } };
+  }
 
-    if (mover.distance < 0.05 && samePostalCode) return "0 km";
-    if (mover.distance < 1) return `${approximate ? "≈ " : ""}< 1 km`;
-    return `${approximate ? "≈ " : ""}${mover.distance.toFixed(1)} km`;
+  function formatDistanceLabel(km) {
+    const bracket = distanceBracket(km);
+    return t(bracket.key, bracket.vars);
+  }
+
+  function formatMoverDistance(mover) {
+    return formatDistanceLabel(mover.distance);
   }
 
   function distanceKm(a, b) {
@@ -602,6 +620,13 @@
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
       Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
     return radius * 2 * Math.atan2(Math.sqrt(h), Math.sqrt(1 - h));
+  }
+
+  // La distance à vol d'oiseau (Haversine) sous-estime la vraie distance en camion.
+  // On applique un facteur routier moyen (~1,3 en Belgique) pour rester crédible.
+  const ROAD_FACTOR = 1.3;
+  function roadDistanceKm(a, b) {
+    return distanceKm(a, b) * ROAD_FACTOR;
   }
 
   function normalizePostalCode(value) {
@@ -631,7 +656,7 @@
     const results = movers
       .map((mover) => ({
         ...mover,
-        distance: distanceKm(origin, { lat: mover.lat, lng: mover.lng })
+        distance: roadDistanceKm(origin, { lat: mover.lat, lng: mover.lng })
       }))
       .filter((mover) => mover.distance <= radius)
       .sort((a, b) => a.distance - b.distance);
@@ -683,7 +708,7 @@
       : "Website";
     const rating = mover.rating ? `<span class="pill">${mover.rating}/5</span>` : "";
     const phone = mover.phone ? `<p class="microcopy">${mover.phone}</p>` : "";
-    const distanceLabel = formatMoverDistance(mover, options.originPostalCode);
+    const distanceLabel = formatMoverDistance(mover);
 
     return `
       <article class="result-card">
@@ -808,7 +833,7 @@
     const destinationCode = normalizePostalCode(values.get("destination"));
     const origin = postalLookup(originCode);
     const destination = postalLookup(destinationCode);
-    return origin && destination ? Math.max(8, distanceKm(origin, destination)) : 25;
+    return origin && destination ? Math.max(8, roadDistanceKm(origin, destination)) : 25;
   }
 
   function calculateManualFlags(values, tripDistance, accessType, itLevel) {
@@ -958,7 +983,7 @@ ${t("email.note")}
     output.innerHTML = `
       <p class="eyebrow">${t("quote.estimate")}</p>
       <div class="price-total">${euro(quote.low)} - ${euro(quote.high)}</div>
-      <p class="microcopy">${t("quote.distance", { distance: quote.tripDistance.toFixed(1) })}</p>
+      <p class="microcopy">${t("quote.distance", { distance: formatDistanceLabel(quote.tripDistance) })}</p>
       <ul class="quote-breakdown">
         ${quote.breakdown.map((block) => `<li><span>${t(block.label)}</span><strong>${euro(block.low)} - ${euro(block.high)}</strong></li>`).join("")}
       </ul>
