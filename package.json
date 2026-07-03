@@ -1,0 +1,9 @@
+{
+  "name": "business-move-website2026",
+  "version": "1.0.0",
+  "description": "Site trilingue (FR/NL/EN) Business Move, genere statiquement pour GitHub Pages.",
+  "private": true,
+  "scripts": {
+    "build": "node build.js"
+  }
+}

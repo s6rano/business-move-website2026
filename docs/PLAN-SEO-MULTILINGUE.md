@@ -1,6 +1,6 @@
 # Plan d'action — Business Move : SEO multilingue + cocons sémantiques
 
-> Feuille de route validée avec Tanguy. Statut : **Phase 0 en cours (décisions)**.
+> Feuille de route validée avec Tanguy. Statut : **Phases 0 à 2 faites** — moteur multilingue en place, 3 pages migrées. Reste Phases 3 (cocons), 4 (entonnoir), 5 (mesure).
 > Site concerné : `businessmove.eu` (statique, hébergé sur GitHub Pages).
 
 ## Les 2 objectifs business
@@ -134,3 +134,4 @@ Point d'attention honnêteté / SEO : la redirection doit rester **transparente 
 - **2026-07-03** : Racine du site = détection automatique de la langue du navigateur (Phase 0.B).
 - **2026-07-03** : Slugs traduits validés en style « riche en mots-clés » pour les 3 langues (Phase 0.A) — tableau figé.
 - **2026-07-03** : Plan sauvegardé comme feuille de route avant démarrage technique.
+- **2026-07-03** : Phases 1 et 2 réalisées. Moteur de génération statique en place (`build.js`, source unique `src/`), 9 pages générées (3 x FR/NL/EN) avec `hreflang`, `canonical`, titres/descriptions traduits, liens localisés, racine à détection auto, `sitemap.xml` et `robots.txt`. Régénération via `npm run build`. Restent à faire : redirections des anciennes URL si déjà indexées (Phase 0.C) et Phases 3-4-5.

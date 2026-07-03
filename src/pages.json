@@ -1,0 +1,55 @@
+[
+  {
+    "id": "home",
+    "template": "index.html",
+    "slug": { "fr": "", "nl": "", "en": "" },
+    "title": {
+      "fr": "Déménageur d'entreprise en Belgique | Business Move",
+      "nl": "Zakelijke verhuizer in België | Business Move",
+      "en": "Corporate movers in Belgium | Business Move"
+    },
+    "description": {
+      "fr": "Trouvez un déménageur d'entreprise par code postal en Belgique. Comparez les prestataires proches et estimez le coût de votre déménagement de bureaux.",
+      "nl": "Vind een zakelijke verhuizer per postcode in België. Vergelijk verhuisfirma's in de buurt en raam de kost van uw kantoorverhuizing.",
+      "en": "Find a corporate mover by postcode in Belgium. Compare nearby providers and estimate the cost of your office move."
+    }
+  },
+  {
+    "id": "organize",
+    "template": "organiser.html",
+    "slug": {
+      "fr": "organiser-demenagement-entreprise.html",
+      "nl": "kantoorverhuizing-organiseren.html",
+      "en": "plan-office-move.html"
+    },
+    "title": {
+      "fr": "Organiser un déménagement d'entreprise | Business Move",
+      "nl": "Kantoorverhuizing organiseren | Business Move",
+      "en": "Plan an office move | Business Move"
+    },
+    "description": {
+      "fr": "Méthode pour organiser le déménagement de vos bureaux en Belgique : cadrage, inventaire, 3 devis comparables, bascule des équipes et reprise.",
+      "nl": "Aanpak om uw bedrijfsverhuizing in België te organiseren: scope, inventaris, 3 vergelijkbare offertes, omschakeling en herstart.",
+      "en": "How to organise a corporate move in Belgium: scoping, inventory, three comparable quotes, team switch-over and restart."
+    }
+  },
+  {
+    "id": "quote",
+    "template": "devis.html",
+    "slug": {
+      "fr": "devis-demenagement-entreprise.html",
+      "nl": "offerte-bedrijfsverhuizing.html",
+      "en": "office-move-quote.html"
+    },
+    "title": {
+      "fr": "Devis déménagement d'entreprise | Business Move",
+      "nl": "Offerte bedrijfsverhuizing | Business Move",
+      "en": "Office move quote | Business Move"
+    },
+    "description": {
+      "fr": "Estimez le coût de transport de votre déménagement d'entreprise et recevez trois contacts de déménageurs proches de votre code postal.",
+      "nl": "Raam de transportkost van uw bedrijfsverhuizing en ontvang drie verhuizers in de buurt van uw postcode.",
+      "en": "Estimate the transport cost of your corporate move and get three movers near your postcode."
+    }
+  }
+]
