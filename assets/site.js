@@ -592,10 +592,60 @@ ${t("email.note")}
     });
   }
 
+  // --- Consentement cookies + mesure d'audience (Google Analytics) ----------
+  // Charge GA UNIQUEMENT apres consentement explicite (RGPD / ePrivacy).
+  // Rien ne se declenche si window.BM_GA_ID est vide : aucun cookie, aucun bandeau.
+  function loadGA(id) {
+    const s = document.createElement("script");
+    s.async = true;
+    s.src = "https://www.googletagmanager.com/gtag/js?id=" + encodeURIComponent(id);
+    document.head.appendChild(s);
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag("js", new Date());
+    gtag("config", id, { anonymize_ip: true });
+  }
+
+  function showConsentBanner(gaId) {
+    const bar = document.createElement("div");
+    bar.className = "cookie-consent";
+    bar.setAttribute("role", "dialog");
+    bar.setAttribute("aria-label", t("consent.text"));
+    const privacyUrl = (window.BM_LINKS && window.BM_LINKS.privacy) || "/";
+    bar.innerHTML =
+      `<p>${t("consent.text")} <a href="${privacyUrl}">${t("consent.more")}</a></p>` +
+      `<div class="cookie-consent-actions">` +
+      `<button type="button" class="btn secondary" data-consent="refuse">${t("consent.refuse")}</button>` +
+      `<button type="button" class="btn" data-consent="accept">${t("consent.accept")}</button>` +
+      `</div>`;
+    document.body.appendChild(bar);
+    bar.querySelector('[data-consent="accept"]').addEventListener("click", () => {
+      try { localStorage.setItem("bm.consent", "granted"); } catch (e) {}
+      loadGA(gaId);
+      bar.remove();
+    });
+    bar.querySelector('[data-consent="refuse"]').addEventListener("click", () => {
+      try { localStorage.setItem("bm.consent", "denied"); } catch (e) {}
+      bar.remove();
+    });
+  }
+
+  function initConsent() {
+    const gaId = window.BM_GA_ID;
+    if (!gaId) return; // pas d'ID => site sans cookie ni bandeau (etat honnete par defaut)
+    let choice = null;
+    try { choice = localStorage.getItem("bm.consent"); } catch (e) {}
+    if (choice === "granted") { loadGA(gaId); return; }
+    if (choice === "denied") { return; }
+    showConsentBanner(gaId);
+  }
+
   document.addEventListener("DOMContentLoaded", () => {
     applyTranslations();
     initUiPreferences();
     initSearchForm();
     initQuoteForm();
+    initConsent();
   });
 })();

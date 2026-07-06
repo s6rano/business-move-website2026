@@ -54,7 +54,7 @@ Elke gehele of gedeeltelijke reproductie, weergave of hergebruik zonder voorafga
 
 De gegevens die de gebruiker eventueel meedeelt (bijvoorbeeld de postcode of contactgegevens) worden uitsluitend verwerkt om de gevraagde dienst te leveren, in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG).
 Voor elke vraag over zijn gegevens of om zijn rechten uit te oefenen, kan de gebruiker schrijven naar info[arobas]businessmove.eu.
-Een gedetailleerd privacybeleid **[IN TE VULLEN: link, indien van toepassing]** vult dit punt aan.
+Een [gedetailleerd privacybeleid](/nl/privacybeleid.html) vult dit punt aan.
 
 ## 9. Beschikbaarheid van de Site
 

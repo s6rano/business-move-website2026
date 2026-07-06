@@ -7,9 +7,9 @@ En naviguant sur le Site, l'utilisateur reconnaît en avoir pris connaissance et
 
 ## 1. Éditeur du Site
 
-Le Site est édité par **[À COMPLÉTER : raison sociale / nom de l'éditeur]**, **[À COMPLÉTER : forme juridique]**, dont le siège est situé **[À COMPLÉTER : adresse complète]**, inscrite à la Banque-Carrefour des Entreprises sous le numéro **[À COMPLÉTER : n° BCE / TVA]**.
-Contact : **[À COMPLÉTER : adresse e-mail]**.
-Hébergement : le Site est hébergé chez **[À COMPLÉTER : nom et coordonnées de l'hébergeur]**.
+Le Site est édité par Noir de Monde, dont le siège est situé en Belgique-Brabant wallon.
+Contact : info[arobas]businessmove.eu.
+Hébergement : le Site est hébergé chez **BeHostings**.
 
 ## 2. Objet et nature du Site
 
@@ -53,8 +53,8 @@ Toute reproduction, représentation ou réutilisation, totale ou partielle, sans
 ## 8. Données personnelles
 
 Les données éventuellement communiquées par l'utilisateur (par exemple le code postal ou des coordonnées de contact) sont traitées aux seules fins de fournir le service demandé, conformément au Règlement général sur la protection des données (RGPD).
-Pour toute question relative à ses données ou pour exercer ses droits, l'utilisateur peut écrire à **[À COMPLÉTER : adresse e-mail]**.
-Une politique de confidentialité détaillée **[À COMPLÉTER : lien, le cas échéant]** complète le présent point.
+Pour toute question relative à ses données ou pour exercer ses droits, l'utilisateur peut écrire à info[arobas]businessmove.eu.
+Une [politique de confidentialité détaillée](/fr/politique-confidentialite.html) complète le présent point.
 
 ## 9. Disponibilité du Site
 
@@ -69,4 +69,4 @@ La version publiée sur le Site au moment de la consultation est celle qui fait 
 ## 11. Droit applicable et juridiction
 
 Les présentes CGU sont régies par le **droit belge**.
-Tout litige relatif au Site ou aux présentes CGU relève de la compétence des tribunaux de **[À COMPLÉTER : arrondissement judiciaire]**, sauf disposition légale impérative contraire.
+Tout litige relatif au Site ou aux présentes CGU relève de la compétence des tribunaux de **Nivelles**, sauf disposition légale impérative contraire.

@@ -54,7 +54,7 @@ Any reproduction, representation or reuse, in whole or in part, without prior wr
 
 Any data the user provides (for example a postcode or contact details) is processed solely to deliver the requested service, in accordance with the General Data Protection Regulation (GDPR).
 For any question about their data or to exercise their rights, the user may write to info[arobas]businessmove.eu.
-A detailed privacy policy **[TO COMPLETE: link, where applicable]** supplements this section.
+A [detailed privacy policy](/en/privacy-policy.html) supplements this section.
 
 ## 9. Availability of the Site
 

@@ -72,6 +72,33 @@ const CGU_META = {
   }
 };
 
+// Page Politique de confidentialite : legale, une page par langue.
+// Contenu = content/legal/privacy.<lang>.md (Markdown pur). Slug localise + hreflang.
+const PRIVACY_SLUG = {
+  fr: "politique-confidentialite.html",
+  nl: "privacybeleid.html",
+  en: "privacy-policy.html"
+};
+const PRIVACY_META = {
+  fr: {
+    title: "Politique de confidentialité | Business Move",
+    description: "Politique de confidentialité de Business Move : quelles données sont traitées, mesure d'audience et cookies, vos droits (RGPD). Site d'information sans stockage de données personnelles."
+  },
+  nl: {
+    title: "Privacybeleid | Business Move",
+    description: "Privacybeleid van Business Move: welke gegevens worden verwerkt, audiëntiemeting en cookies, uw rechten (AVG). Informatiesite zonder opslag van persoonsgegevens."
+  },
+  en: {
+    title: "Privacy policy | Business Move",
+    description: "Business Move privacy policy: what data is processed, audience measurement and cookies, your rights (GDPR). An information site that stores no personal data."
+  }
+};
+
+// Google Analytics 4 (mesure d'audience). Laisser VIDE = aucun cookie, aucun
+// bandeau de consentement (etat honnete par defaut). Mettre "G-XXXXXXXXXX" pour
+// activer : le bandeau de consentement s'affiche et GA ne se charge qu'apres accord.
+const GA_MEASUREMENT_ID = "";
+
 // Libelles de bouton CTA d'article (par type de cta, par langue).
 const CTA = {
   calculateur: { fr: "Estimer mon déménagement", nl: "Mijn verhuizing ramen", en: "Estimate my move" },
@@ -129,6 +156,12 @@ function cguUrl(lang) {
 }
 function cguOutput(lang) {
   return path.join(DIST, lang, CGU_SLUG[lang]);
+}
+function privacyUrl(lang) {
+  return `/${lang}/${PRIVACY_SLUG[lang]}`;
+}
+function privacyOutput(lang) {
+  return path.join(DIST, lang, PRIVACY_SLUG[lang]);
 }
 function articleUrl(article, lang) {
   return `/${lang}/${GUIDE_SEG[lang]}/${article.langs[lang].slug}.html`;
@@ -289,6 +322,7 @@ function applyChrome(html, lang, pageUrls) {
   });
   html = html.split('href="guide.html"').join(`href="${guideIndexUrl(lang)}"`);
   html = html.split('href="cgu.html"').join(`href="${cguUrl(lang)}"`);
+  html = html.split('href="privacy.html"').join(`href="${privacyUrl(lang)}"`);
 
   html = html.replace(
     /data-lang="([a-z]{2})" aria-pressed="[^"]*"/g,
@@ -299,11 +333,12 @@ function applyChrome(html, lang, pageUrls) {
     home: pageUrl("home", lang),
     quote: pageUrl("quote", lang),
     organize: pageUrl("organize", lang),
-    guide: guideIndexUrl(lang)
+    guide: guideIndexUrl(lang),
+    privacy: privacyUrl(lang)
   };
   const bootstrap =
     `    <script src="/assets/i18n.js"></script>\n` +
-    `    <script>window.BM_LANG="${lang}";window.BM_PAGE_URLS=${JSON.stringify(pageUrls)};window.BM_LINKS=${JSON.stringify(links)};</script>\n` +
+    `    <script>window.BM_LANG="${lang}";window.BM_PAGE_URLS=${JSON.stringify(pageUrls)};window.BM_LINKS=${JSON.stringify(links)};window.BM_GA_ID=${JSON.stringify(GA_MEASUREMENT_ID)};</script>\n` +
     `    <script src="/assets/site.js"></script>`;
   html = html.replace('<script src="/assets/site.js"></script>', bootstrap);
 
@@ -491,6 +526,19 @@ function renderCgu(lang) {
   return injectHead(html, headLinks(cguUrl(lang), alts));
 }
 
+function renderPrivacy(lang) {
+  let html = fs.readFileSync(path.join(TEMPLATES, "cgu.html"), "utf8");
+  const pageUrls = LANGS.reduce((a, l) => ((a[l] = privacyUrl(l)), a), {});
+  html = applyChrome(html, lang, pageUrls);
+  const meta = PRIVACY_META[lang];
+  html = html.replace("__TITLE__", () => escapeText(meta.title));
+  html = html.replace('content="__DESC__"', () => `content="${escapeAttr(meta.description)}"`);
+  const md = fs.readFileSync(path.join(CONTENT, "legal", `privacy.${lang}.md`), "utf8");
+  html = html.replace("<!--LEGAL-->", () => mdToHtml(md));
+  const alts = LANGS.map((l) => ({ lang: l, url: privacyUrl(l) }));
+  return injectHead(html, headLinks(privacyUrl(lang), alts));
+}
+
 function writeFileSafe(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, "utf8");
@@ -563,6 +611,9 @@ function buildSitemap(articles) {
   });
   LANGS.forEach((lang) => {
     urls.push(sitemapEntry(`${BASE_URL}${cguUrl(lang)}`, LANGS.map((l) => ({ lang: l, url: cguUrl(l) }))));
+  });
+  LANGS.forEach((lang) => {
+    urls.push(sitemapEntry(`${BASE_URL}${privacyUrl(lang)}`, LANGS.map((l) => ({ lang: l, url: privacyUrl(l) }))));
   });
   articles.forEach((a) => {
     const existing = LANGS.filter((l) => a.langs[l]);
@@ -642,6 +693,7 @@ function main() {
   );
 
   LANGS.forEach((lang) => writeFileSafe(cguOutput(lang), renderCgu(lang)));
+  LANGS.forEach((lang) => writeFileSafe(privacyOutput(lang), renderPrivacy(lang)));
 
   writeFileSafe(path.join(DIST, "index.html"), buildRoot());
   writeFileSafe(path.join(DIST, "sitemap.xml"), buildSitemap(articles));
@@ -649,7 +701,7 @@ function main() {
   writeFileSafe(path.join(DIST, ".htaccess"), buildHtaccess());
 
   console.log(
-    `OK : ${count} pages + ${LANGS.length} index Guide + ${artCount} article(s) + ${LANGS.length} CGU + racine + sitemap.xml + robots.txt + .htaccess`
+    `OK : ${count} pages + ${LANGS.length} index Guide + ${artCount} article(s) + ${LANGS.length} CGU + ${LANGS.length} confidentialité + racine + sitemap.xml + robots.txt + .htaccess`
   );
   console.log("Tout est dans dist/ — depose son CONTENU a la racine web de behostings (FTP).");
 }

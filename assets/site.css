@@ -956,3 +956,58 @@ h3 {
     padding: 48px 0;
   }
 }
+
+/* Bandeau de consentement cookies (mesure d'audience) — panneau sombre fixe. */
+.cookie-consent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 24px;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: var(--dark-2);
+  color: #f6f1ec;
+  border-top: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.25);
+}
+.cookie-consent p {
+  margin: 0;
+  font-size: 0.9rem;
+  max-width: 70ch;
+}
+.cookie-consent a {
+  color: #f6f1ec;
+  text-decoration: underline;
+}
+.cookie-consent-actions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.cookie-consent .btn {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fff;
+}
+.cookie-consent .btn:hover {
+  background: #fff;
+  color: var(--dark-2);
+}
+.cookie-consent .btn.secondary {
+  background: transparent;
+  color: #f6f1ec;
+  border-color: rgba(255, 255, 255, 0.45);
+}
+@media (max-width: 640px) {
+  .cookie-consent-actions {
+    width: 100%;
+  }
+  .cookie-consent-actions .btn {
+    flex: 1;
+  }
+}
