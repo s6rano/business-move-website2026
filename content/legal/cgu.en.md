@@ -7,9 +7,9 @@ By using the Site, the user acknowledges having read and accepted them.
 
 ## 1. Site publisher
 
-The Site is published by **[TO COMPLETE: company name / publisher name]**, **[TO COMPLETE: legal form]**, with registered office at **[TO COMPLETE: full address]**, registered with the Crossroads Bank for Enterprises under number **[TO COMPLETE: company / VAT number]**.
-Contact: **[TO COMPLETE: email address]**.
-Hosting: the Site is hosted by **[TO COMPLETE: host name and contact details]**.
+The Site is published by Noir de Monde, whose registered office is located in Belgium – Walloon Brabant.
+Contact: info[arobas]businessmove.eu.
+Hosting: the Site is hosted by **BeHostings**.
 
 ## 2. Purpose and nature of the Site
 
@@ -53,7 +53,7 @@ Any reproduction, representation or reuse, in whole or in part, without prior wr
 ## 8. Personal data
 
 Any data the user provides (for example a postcode or contact details) is processed solely to deliver the requested service, in accordance with the General Data Protection Regulation (GDPR).
-For any question about their data or to exercise their rights, the user may write to **[TO COMPLETE: email address]**.
+For any question about their data or to exercise their rights, the user may write to info[arobas]businessmove.eu.
 A detailed privacy policy **[TO COMPLETE: link, where applicable]** supplements this section.
 
 ## 9. Availability of the Site
@@ -69,4 +69,4 @@ The version published on the Site at the time of consultation is the one that ap
 ## 11. Governing law and jurisdiction
 
 These Terms are governed by **Belgian law**.
-Any dispute relating to the Site or these Terms falls within the jurisdiction of the courts of **[TO COMPLETE: judicial district]**, unless a mandatory legal provision provides otherwise.
+Any dispute relating to the Site or these Terms falls within the jurisdiction of the courts of **Nivelles**, unless a mandatory legal provision provides otherwise.

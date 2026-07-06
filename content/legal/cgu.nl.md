@@ -7,9 +7,9 @@ Door de Site te gebruiken, erkent de gebruiker dat hij er kennis van heeft genom
 
 ## 1. Uitgever van de Site
 
-De Site wordt uitgegeven door **[IN TE VULLEN: maatschappelijke naam / naam van de uitgever]**, **[IN TE VULLEN: rechtsvorm]**, met maatschappelijke zetel te **[IN TE VULLEN: volledig adres]**, ingeschreven in de Kruispuntbank van Ondernemingen onder het nummer **[IN TE VULLEN: KBO-/btw-nummer]**.
-Contact: **[IN TE VULLEN: e-mailadres]**.
-Hosting: de Site wordt gehost bij **[IN TE VULLEN: naam en gegevens van de hostingpartij]**.
+De Site wordt uitgegeven door Noir de Monde, met maatschappelijke zetel in België – Waals-Brabant.
+Contact: info[arobas]businessmove.eu.
+Hosting: de Site wordt gehost bij **BeHostings**.
 
 ## 2. Doel en aard van de Site
 
@@ -53,7 +53,7 @@ Elke gehele of gedeeltelijke reproductie, weergave of hergebruik zonder voorafga
 ## 8. Persoonsgegevens
 
 De gegevens die de gebruiker eventueel meedeelt (bijvoorbeeld de postcode of contactgegevens) worden uitsluitend verwerkt om de gevraagde dienst te leveren, in overeenstemming met de Algemene Verordening Gegevensbescherming (AVG).
-Voor elke vraag over zijn gegevens of om zijn rechten uit te oefenen, kan de gebruiker schrijven naar **[IN TE VULLEN: e-mailadres]**.
+Voor elke vraag over zijn gegevens of om zijn rechten uit te oefenen, kan de gebruiker schrijven naar info[arobas]businessmove.eu.
 Een gedetailleerd privacybeleid **[IN TE VULLEN: link, indien van toepassing]** vult dit punt aan.
 
 ## 9. Beschikbaarheid van de Site
@@ -69,4 +69,4 @@ De versie die op het moment van raadpleging op de Site staat, is de versie die g
 ## 11. Toepasselijk recht en bevoegde rechtbank
 
 Deze Voorwaarden worden beheerst door het **Belgisch recht**.
-Elk geschil over de Site of deze Voorwaarden valt onder de bevoegdheid van de rechtbanken van **[IN TE VULLEN: gerechtelijk arrondissement]**, behoudens dwingende wettelijke bepaling die anders bepaalt.
+Elk geschil over de Site of deze Voorwaarden valt onder de bevoegdheid van de rechtbanken van **Nijvel**, behoudens dwingende wettelijke bepaling die anders bepaalt.
