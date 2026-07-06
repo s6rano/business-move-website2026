@@ -214,6 +214,7 @@ function stripQuotes(s) {
 
 function parseArticleFile(raw) {
   raw = raw.replace(/\r\n/g, "\n");
+  raw = raw.replace(/^﻿/, "").replace(/^\n+/, ""); // robustesse : BOM + lignes vides en tete
   const fm = {};
   let body = raw;
   const m = raw.match(/^---\n([\s\S]*?)\n---\n?([\s\S]*)$/);
@@ -244,7 +245,10 @@ function loadArticles() {
   const map = {};
   fs.readdirSync(CONTENT).filter((f) => f.endsWith(".md")).forEach((f) => {
     const p = parseArticleFile(fs.readFileSync(path.join(CONTENT, f), "utf8"));
-    if (!p.id || !p.lang) return;
+    if (!p.id || !p.lang) {
+      console.warn(`ATTENTION : ${f} ignore (frontmatter id/lang introuvable — verifier l'en-tete ---).`);
+      return;
+    }
     if (!map[p.id]) map[p.id] = { id: p.id, langs: {} };
     map[p.id].langs[p.lang] = p;
   });

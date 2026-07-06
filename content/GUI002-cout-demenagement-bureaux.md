@@ -1,4 +1,3 @@
-
 ---
 id: GUI002
 lang: fr
