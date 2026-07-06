@@ -13,23 +13,21 @@ Site trilingue (FR / NL / EN) pour trouver un déménageur d'entreprise en Belgi
 
 ## Comment le site est construit (important)
 
-Le site est **généré** : on ne modifie jamais directement les pages dans `/fr`, `/nl`, `/en`. Ces dossiers sont produits automatiquement par un script à partir d'une **source unique**.
+Le site est **généré** dans un dossier `dist/` : on ne modifie jamais directement le contenu de `dist/`. Tout est produit par un script à partir de la **source** (à la racine du dépôt).
 
 ### Source de vérité (ce qu'on édite)
 
 - `src/i18n.json` — toutes les traductions (FR / NL / EN), une seule fois par texte
 - `src/pages.json` — la liste des pages : slugs par langue, titres et descriptions SEO
-- `src/templates/` — les gabarits HTML (`index.html`, `organiser.html`, `devis.html`)
+- `src/templates/` — les gabarits HTML (pages appli + `guide-article`, `guide-index`)
+- `content/*.md` — les articles Guide (un fichier par langue, reliés par le champ `id`)
 - `assets/site.js` — la logique (recherche, calculateur), sans les textes
 - `assets/site.css` — le design
 - `data/movers.js` — les déménageurs et les coordonnées des codes postaux
 
-### Fichiers générés (à ne pas éditer à la main)
+### Fichiers générés — tout dans `dist/` (à ne pas éditer à la main)
 
-- `/fr`, `/nl`, `/en` — les 9 pages traduites
-- `index.html` (racine) — détection automatique de la langue puis redirection
-- `assets/i18n.js` — le dictionnaire chargé par le navigateur
-- `sitemap.xml`, `robots.txt`
+`npm run build` produit **uniquement** le dossier `dist/` (la racine ne contient que la source). `dist/` contient : `fr/ nl/ en/` (pages + articles Guide), `assets/` (+ `i18n.js`), `identity/`, `data/`, `index.html` (routeur de langue), `sitemap.xml`, `robots.txt` et `.htaccess`.
 
 ## Régénérer le site après une modification
 
@@ -37,13 +35,13 @@ Le site est **généré** : on ne modifie jamais directement les pages dans `/fr
 npm run build
 ```
 
-(ou `node build.js`). Le script régénère tout : pages par langue, `hreflang`, `canonical`, titres traduits, sitemap et robots.
+(ou `node build.js`). Le script régénère tout `dist/` : pages par langue, articles Guide, `hreflang`, `canonical`, titres traduits, sitemap, robots et `.htaccess`.
 
 ## Aperçu en local
 
 ```bash
 npm run build
-python3 -m http.server 4173
+python3 -m http.server --directory dist 4173
 ```
 
 Puis ouvrir `http://localhost:4173/` (la racine détecte la langue) ou directement `http://localhost:4173/fr/`.
@@ -54,7 +52,7 @@ Le site est **en production chez behostings** (hébergeur privé), mis à jour p
 
 Pour publier :
 
-1. `npm run build` — régénère tout et assemble un dossier `dist/` (contenu publiable uniquement : `fr/ nl/ en/ assets/ identity/ data/`, `index.html`, `sitemap.xml`, `robots.txt`, les relais).
+1. `npm run build` — régénère le dossier `dist/` (contenu publiable uniquement : `fr/ nl/ en/ assets/ identity/ data/`, `index.html`, `sitemap.xml`, `robots.txt`, `.htaccess`).
 2. Dans FileZilla, déposer **le contenu de `dist/`** à la racine web de behostings.
 
 `dist/` est régénéré à chaque build et exclu de Git. Les articles Guide vivent dans `content/*.md` (un fichier par langue, reliés par le champ `id`). Voir la feuille de route SEO dans `docs/PLAN-SEO-MULTILINGUE.md`.

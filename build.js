@@ -2,13 +2,12 @@
 /*
  * build.js — Generateur statique multilingue de Business Move.
  *
- * Source de verite unique -> pages HTML statiques dans /fr, /nl, /en :
- *   - src/i18n.json + src/pages.json + src/templates/  -> pages "appli"
- *   - content/*.md (articles, un fichier par langue, relies par `id`) -> section Guide
- * Produit aussi la racine (detection de langue), sitemap.xml, robots.txt et les
- * pages-relais des anciennes URL. Aucune dependance externe.
+ * Principe : la RACINE ne contient que la SOURCE ; tout le genere va dans dist/.
+ *   Source : src/i18n.json + src/pages.json + src/templates/ + content/*.md
+ *            + assets/ (site.css, site.js) + identity/ + data/
+ *   Sortie unique : dist/  (a deposer par FTP a la racine web de behostings)
  *
- * Usage : node build.js  (ou npm run build)
+ * Usage : node build.js  (ou npm run build)  — aucune dependance externe.
  */
 
 const fs = require("fs");
@@ -18,10 +17,10 @@ const ROOT = __dirname;
 const SRC = path.join(ROOT, "src");
 const TEMPLATES = path.join(SRC, "templates");
 const CONTENT = path.join(ROOT, "content");
+const DIST = path.join(ROOT, "dist");
 const BASE_URL = "https://businessmove.eu";
 const LANGS = ["fr", "nl", "en"];
 
-// Segment d'URL localise de la section Guide (le "dossier" par langue).
 const GUIDE_SEG = { fr: "guide", nl: "gids", en: "guide" };
 const GUIDE_LABEL = { fr: "Guide", nl: "Gids", en: "Guide" };
 const GUIDE_TEXT = {
@@ -55,6 +54,7 @@ const i18n = JSON.parse(fs.readFileSync(path.join(SRC, "i18n.json"), "utf8"));
 const pages = JSON.parse(fs.readFileSync(path.join(SRC, "pages.json"), "utf8"));
 
 const HREF_TO_PAGE = { "index.html": "home", "organiser.html": "organize", "devis.html": "quote" };
+// Anciennes URL -> nouvelles pages FR (l'ancien site servait le francais). 301 via .htaccess.
 const REDIRECTS = {
   "organiser.html": { toPage: "organize", lang: "fr" },
   "devis.html": { toPage: "quote", lang: "fr" }
@@ -69,19 +69,19 @@ function pageUrl(id, lang) {
 }
 function outputPath(id, lang) {
   const slug = pageById(id).slug[lang];
-  return slug ? path.join(ROOT, lang, slug) : path.join(ROOT, lang, "index.html");
+  return slug ? path.join(DIST, lang, slug) : path.join(DIST, lang, "index.html");
 }
 function guideIndexUrl(lang) {
   return `/${lang}/${GUIDE_SEG[lang]}/`;
 }
 function guideIndexOutput(lang) {
-  return path.join(ROOT, lang, GUIDE_SEG[lang], "index.html");
+  return path.join(DIST, lang, GUIDE_SEG[lang], "index.html");
 }
 function articleUrl(article, lang) {
   return `/${lang}/${GUIDE_SEG[lang]}/${article.langs[lang].slug}.html`;
 }
 function articleOutput(article, lang) {
-  return path.join(ROOT, lang, GUIDE_SEG[lang], article.langs[lang].slug + ".html");
+  return path.join(DIST, lang, GUIDE_SEG[lang], article.langs[lang].slug + ".html");
 }
 
 function escapeText(value) {
@@ -198,18 +198,15 @@ function loadArticles() {
 function applyChrome(html, lang, pageUrls) {
   html = html.replace(/<html lang="[^"]*">/, `<html lang="${lang}">`);
 
-  // Entree "Guide" dans le menu (avant le lien Devis de la nav).
   html = html.replace(
     /(<a href="devis\.html"(?:[^>]*?)data-i18n="nav\.quoteContact"[^>]*>)/,
     `<a href="guide.html">${GUIDE_LABEL[lang]}</a>\n          $1`
   );
-  // Le lien "Guide" du pied de page pointe vers l'index Guide.
   html = html.replace(
     '<a href="organiser.html" data-i18n="footer.guide">',
     '<a href="guide.html" data-i18n="footer.guide">'
   );
 
-  // Textes data-i18n.
   html = html.replace(
     /(<([a-zA-Z0-9]+)([^>]*?)\sdata-i18n="([^"]+)"([^>]*)>)([\s\S]*?)(<\/\2>)/g,
     (m, open, tag, pre, key, post, inner, close) => open + escapeText(tr(lang, key, inner)) + close
@@ -223,22 +220,18 @@ function applyChrome(html, lang, pageUrls) {
     (m, tail, key) => `aria-label="${escapeAttr(tr(lang, key, ""))}"${tail}`
   );
 
-  // Assets en absolu.
   html = html.replace(/(src|href)="(assets|identity|data)\//g, '$1="/$2/');
 
-  // Liens internes localises.
   Object.keys(HREF_TO_PAGE).forEach((href) => {
     html = html.split(`href="${href}"`).join(`href="${pageUrl(HREF_TO_PAGE[href], lang)}"`);
   });
   html = html.split('href="guide.html"').join(`href="${guideIndexUrl(lang)}"`);
 
-  // Boutons de langue.
   html = html.replace(
     /data-lang="([a-z]{2})" aria-pressed="[^"]*"/g,
     (m, code) => `data-lang="${code}" aria-pressed="${code === lang}"`
   );
 
-  // Bootstrap (dictionnaire + langue + URL soeurs).
   const bootstrap =
     `    <script src="/assets/i18n.js"></script>\n` +
     `    <script>window.BM_LANG="${lang}";window.BM_PAGE_URLS=${JSON.stringify(pageUrls)};</script>\n` +
@@ -318,6 +311,20 @@ function writeFileSafe(filePath, content) {
   fs.writeFileSync(filePath, content, "utf8");
 }
 
+function copyRecursive(src, dest) {
+  const st = fs.statSync(src);
+  if (st.isDirectory()) {
+    fs.mkdirSync(dest, { recursive: true });
+    fs.readdirSync(src).forEach((name) => {
+      if (name === ".DS_Store" || name.endsWith(".csv")) return; // pas de fichiers systeme ni de leads
+      copyRecursive(path.join(src, name), path.join(dest, name));
+    });
+  } else {
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.copyFileSync(src, dest);
+  }
+}
+
 function buildRoot() {
   const alternates = LANGS.map((l) => `    <link rel="alternate" hreflang="${l}" href="${BASE_URL}/${l}/">`).join("\n");
   return `<!doctype html>
@@ -385,58 +392,46 @@ function buildRobots() {
   return `User-agent: *\nAllow: /\n\nSitemap: ${BASE_URL}/sitemap.xml\n`;
 }
 
-function buildRedirectStub(targetUrl) {
-  return `<!doctype html>
-<html lang="fr">
-  <head>
-    <meta charset="utf-8">
-    <title>Business Move</title>
-    <link rel="canonical" href="${BASE_URL}${targetUrl}">
-    <meta http-equiv="refresh" content="0; url=${targetUrl}">
-    <script>window.location.replace("${targetUrl}");</script>
-  </head>
-  <body>
-    <p>Cette page a été déplacée. <a href="${targetUrl}">Continuer vers la nouvelle adresse</a>.</p>
-  </body>
-</html>
+// Configuration Apache : domaine canonique + vrais 301. (HTTPS optionnel, voir note.)
+function buildHtaccess() {
+  const redirects = Object.keys(REDIRECTS)
+    .map((oldPath) => `Redirect 301 /${oldPath} ${pageUrl(REDIRECTS[oldPath].toPage, REDIRECTS[oldPath].lang)}`)
+    .join("\n");
+  return `# Business Move — configuration Apache (genere par build.js, ne pas editer a la main)
+
+# Pas de listing des dossiers
+Options -Indexes
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Domaine canonique : sans www
+  RewriteCond %{HTTP_HOST} ^www\\.(.+)$ [NC]
+  RewriteRule ^ https://%1%{REQUEST_URI} [L,R=301]
+
+  # Forcer HTTPS — a activer seulement si behostings ne le fait pas deja
+  # (risque de boucle derriere un proxy SSL ; decommenter en connaissance de cause) :
+  # RewriteCond %{HTTPS} off
+  # RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
+
+# Redirections 301 des anciennes URL vers les nouvelles pages FR
+${redirects}
 `;
 }
 
-// ---------- Assemblage du dossier dist/ (prêt pour un dépôt FTP) ----------
-
-function copyRecursive(src, dest) {
-  const st = fs.statSync(src);
-  if (st.isDirectory()) {
-    fs.mkdirSync(dest, { recursive: true });
-    fs.readdirSync(src).forEach((name) => {
-      if (name === ".DS_Store" || name.endsWith(".csv")) return; // pas de fichiers systeme ni de leads
-      copyRecursive(path.join(src, name), path.join(dest, name));
-    });
-  } else {
-    fs.mkdirSync(path.dirname(dest), { recursive: true });
-    fs.copyFileSync(src, dest);
-  }
-}
-
-// Rassemble uniquement les fichiers publiables dans dist/ (le reste = sources/outils).
-function buildDist() {
-  const dist = path.join(ROOT, "dist");
-  if (fs.existsSync(dist)) fs.rmSync(dist, { recursive: true, force: true });
-  fs.mkdirSync(dist, { recursive: true });
-  const files = ["index.html", "sitemap.xml", "robots.txt", "organiser.html", "devis.html"];
-  const dirs = ["fr", "nl", "en", "assets", "identity", "data"];
-  files.forEach((f) => {
-    const s = path.join(ROOT, f);
-    if (fs.existsSync(s)) fs.copyFileSync(s, path.join(dist, f));
-  });
-  dirs.forEach((d) => {
-    const s = path.join(ROOT, d);
-    if (fs.existsSync(s)) copyRecursive(s, path.join(dist, d));
-  });
-}
-
 function main() {
-  writeFileSafe(path.join(ROOT, "assets", "i18n.js"), `window.BM_I18N = ${JSON.stringify(i18n)};\n`);
+  if (fs.existsSync(DIST)) fs.rmSync(DIST, { recursive: true, force: true });
+  fs.mkdirSync(DIST, { recursive: true });
+
+  // Copie des assets sources dans dist/ (site.css, site.js, images, movers.js ; .csv exclus).
+  ["assets", "identity", "data"].forEach((d) => {
+    const s = path.join(ROOT, d);
+    if (fs.existsSync(s)) copyRecursive(s, path.join(DIST, d));
+  });
+
+  // Dictionnaire genere, consomme par le navigateur.
+  writeFileSafe(path.join(DIST, "assets", "i18n.js"), `window.BM_I18N = ${JSON.stringify(i18n)};\n`);
 
   const articles = loadArticles();
 
@@ -448,7 +443,6 @@ function main() {
     });
   });
 
-  // Section Guide : index par langue + articles (par langue existante).
   LANGS.forEach((lang) => writeFileSafe(guideIndexOutput(lang), renderGuideIndex(lang, articles)));
   let artCount = 0;
   articles.forEach((a) =>
@@ -458,24 +452,15 @@ function main() {
     })
   );
 
-  writeFileSafe(path.join(ROOT, "index.html"), buildRoot());
-  writeFileSafe(path.join(ROOT, "sitemap.xml"), buildSitemap(articles));
-  writeFileSafe(path.join(ROOT, "robots.txt"), buildRobots());
-
-  let redirectCount = 0;
-  Object.keys(REDIRECTS).forEach((oldPath) => {
-    const r = REDIRECTS[oldPath];
-    writeFileSafe(path.join(ROOT, oldPath), buildRedirectStub(pageUrl(r.toPage, r.lang)));
-    redirectCount += 1;
-  });
-
-  // Dossier pret pour FTP (contenu publiable uniquement).
-  buildDist();
+  writeFileSafe(path.join(DIST, "index.html"), buildRoot());
+  writeFileSafe(path.join(DIST, "sitemap.xml"), buildSitemap(articles));
+  writeFileSafe(path.join(DIST, "robots.txt"), buildRobots());
+  writeFileSafe(path.join(DIST, ".htaccess"), buildHtaccess());
 
   console.log(
-    `OK : ${count} pages + ${LANGS.length} index Guide + ${artCount} article(s) + racine + ${redirectCount} redirections + sitemap.xml + robots.txt`
+    `OK : ${count} pages + ${LANGS.length} index Guide + ${artCount} article(s) + racine + sitemap.xml + robots.txt + .htaccess`
   );
-  console.log("Dossier dist/ pret pour FTP (depose son CONTENU a la racine de behostings).");
+  console.log("Tout est dans dist/ — depose son CONTENU a la racine web de behostings (FTP).");
 }
 
 main();
