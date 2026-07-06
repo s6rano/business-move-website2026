@@ -81,11 +81,3 @@ Avant même les devis, vous pouvez cadrer votre budget :
 
 Un devis de déménagement d'entreprise n'est pas un chiffre sorti du chapeau : il se construit à partir d'une visite technique, d'un tarif horaire ou d'un prix au volume, et d'une série de postes que vous pouvez lire un par un. Exigez le détail, comparez sur les mêmes bases, et servez-vous du calculateur pour une première estimation avant de solliciter trois devis.
 
----
-
-**Lire aussi**
-
-- Prix d'un déménagement d'entreprise : le guide complet *(GUI001)*
-- Combien coûte un déménagement de bureaux ? *(GUI002)*
-- Les coûts cachés d'un déménagement de bureaux *(GUI004, à venir)*
-- Comment obtenir trois devis comparables *(GUI018, à venir)*

@@ -94,10 +94,3 @@ If you would rather not steer all this yourself, a specialist agency can take on
 
 An office move has no single price: it is framed. Use the ranges to place yourself, the calculator for a first estimate, and three comparable quotes to decide with confidence.
 
----
-
-**Read also**
-
-- The complete guide to the cost of a business move *(GUI001, coming soon)*
-- How an office move quote is calculated *(GUI003, coming soon)*
-- The hidden costs of an office move *(GUI004, coming soon)*

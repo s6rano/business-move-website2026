@@ -23,6 +23,7 @@ const LANGS = ["fr", "nl", "en"];
 
 const GUIDE_SEG = { fr: "guide", nl: "gids", en: "guide" };
 const GUIDE_LABEL = { fr: "Guide", nl: "Gids", en: "Guide" };
+const RELATED_LABEL = { fr: "Lire aussi", nl: "Lees ook", en: "Read also" };
 const GUIDE_TEXT = {
   fr: {
     metaTitle: "Guide du déménagement d'entreprise | Business Move",
@@ -245,6 +246,12 @@ function stripQuotes(s) {
   return s.replace(/^"(.*)"$/, "$1");
 }
 
+// Parse le frontmatter `liens: [GUI001, GUI002]` en liste d'ids (maillage cocon).
+function parseLiens(raw) {
+  if (!raw) return [];
+  return raw.replace(/[[\]]/g, "").split(",").map((s) => s.trim()).filter(Boolean);
+}
+
 function parseArticleFile(raw) {
   raw = raw.replace(/\r\n/g, "\n");
   raw = raw.replace(/^﻿/, "").replace(/^\n+/, ""); // robustesse : BOM + lignes vides en tete
@@ -268,6 +275,7 @@ function parseArticleFile(raw) {
     reserve: stripQuotes(fm.reserve),
     seoTitle: stripQuotes(fm.seo_title),
     seoDesc: stripQuotes(fm.seo_meta_description),
+    liens: parseLiens(fm.liens),
     h1: h1 ? h1[1].trim() : fm.slug || "",
     bodyHtml: mdToHtml(body)
   };
@@ -439,7 +447,7 @@ function renderPage(page, lang) {
   return injectHead(html, headLinks(pageUrl(page.id, lang), alts));
 }
 
-function renderArticle(article, lang) {
+function renderArticle(article, lang, byId) {
   const al = article.langs[lang];
   let html = fs.readFileSync(path.join(TEMPLATES, "guide-article.html"), "utf8");
   const pageUrls = LANGS.reduce(
@@ -478,6 +486,19 @@ function renderArticle(article, lang) {
   // Mention de reserve, pilotee par le frontmatter `reserve`.
   const reserveNote = al.reserve ? `<p class="article-reserve">${escapeText(al.reserve)}</p>` : "";
   html = html.replace("<!--RESERVE-->", () => reserveNote);
+
+  // Maillage interne du cocon : « Lire aussi » genere depuis le frontmatter `liens`.
+  // On ne relie QUE les articles reellement publies (presents dans le build) et
+  // disponibles dans la meme langue ; les autres (a venir) sont simplement ignores.
+  const related = (al.liens || [])
+    .map((id) => byId && byId[id])
+    .filter((rel) => rel && rel.langs[lang] && rel.id !== article.id)
+    .map((rel) => `<li><a href="${articleUrl(rel, lang)}">${escapeText(rel.langs[lang].h1)}</a></li>`);
+  const relatedHtml = related.length
+    ? `<nav class="article-related" aria-label="${escapeAttr(RELATED_LABEL[lang])}">` +
+      `<h2>${escapeText(RELATED_LABEL[lang])}</h2><ul>${related.join("")}</ul></nav>`
+    : "";
+  html = html.replace("<!--RELATED-->", () => relatedHtml);
 
   // Encart sponsor pleine largeur en bas d'article.
   html = html.replace("<!--SPONSOR-BOTTOM-->", () => sponsorHtml(lang, true));
@@ -684,10 +705,12 @@ function main() {
   });
 
   LANGS.forEach((lang) => writeFileSafe(guideIndexOutput(lang), renderGuideIndex(lang, articles)));
+  const byId = {};
+  articles.forEach((a) => (byId[a.id] = a));
   let artCount = 0;
   articles.forEach((a) =>
     Object.keys(a.langs).forEach((lang) => {
-      writeFileSafe(articleOutput(a, lang), renderArticle(a, lang));
+      writeFileSafe(articleOutput(a, lang), renderArticle(a, lang, byId));
       artCount += 1;
     })
   );

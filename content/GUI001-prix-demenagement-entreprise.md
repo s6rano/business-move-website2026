@@ -95,12 +95,3 @@ Les repères situent, ils ne remplacent pas une estimation. Pour approcher votre
 
 Un déménagement d'entreprise ne se résume pas au transport : il se chiffre au cas par cas, en fonction du volume, des accès, de l'informatique, du calendrier et de tout le travail de coordination autour. Il n'y a donc pas de tarif universel, mais des repères et une méthode. Servez-vous des ordres de grandeur pour vous situer, du calculateur pour une première estimation, et de trois devis comparables pour décider en confiance.
 
----
-
-**Lire aussi**
-
-- Combien coûte un déménagement de bureaux ? *(GUI002)*
-- Comment se calcule un devis de déménagement d'entreprise ? *(GUI003, à venir)*
-- Les coûts cachés d'un déménagement de bureaux *(GUI004, à venir)*
-- Comment réduire le coût d'un déménagement d'entreprise *(GUI005, à venir)*
-- Quel budget selon la taille des bureaux ? *(GUI006, à venir)*

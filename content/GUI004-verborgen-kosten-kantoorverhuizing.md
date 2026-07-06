@@ -58,11 +58,3 @@ Blijft het moeilijkste: de blinde vlekken zien wanneer u dit soort project nog n
 
 De werkelijke kost van een kantoorverhuizing overstijgt ruimschoots de prijs van de vrachtwagen. Ze wordt opgebouwd vóór (voorbereiding, vergunningen, inrichting), tijdens (onvoorziene zaken, overuren) en na (herstel, herinstallatie, productiviteitsverlies), de interne tijd niet meegerekend. Erop anticiperen — alleen of met een coördinator — voorkomt dat de eindfactuur die van de offerte verdubbelt.
 
----
-
-**Lees ook**
-
-- Prijs van een bedrijfsverhuizing: de volledige gids *(GUI001)*
-- Wat kost een kantoorverhuizing? *(GUI002)*
-- Hoe wordt een offerte voor een bedrijfsverhuizing berekend? *(GUI003)*
-- Hoe u de kost van een bedrijfsverhuizing verlaagt *(GUI005, komt eraan)*

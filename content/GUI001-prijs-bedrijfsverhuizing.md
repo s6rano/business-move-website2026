@@ -95,12 +95,3 @@ Richtcijfers oriënteren, maar vervangen geen raming. Om uw werkelijke kost te b
 
 Een bedrijfsverhuizing is meer dan transport: ze wordt geval per geval becijferd, afhankelijk van het volume, de toegang, de IT, de planning en al het coördinatiewerk eromheen. Er is dus geen universeel tarief, wel richtcijfers en een methode. Gebruik de grootteordes ter oriëntatie, de rekenmodule voor een eerste raming, en drie vergelijkbare offertes om met vertrouwen te beslissen.
 
----
-
-**Lees ook**
-
-- Wat kost een kantoorverhuizing? *(GUI002)*
-- Hoe wordt een offerte voor een bedrijfsverhuizing berekend? *(GUI003, komt eraan)*
-- De verborgen kosten van een kantoorverhuizing *(GUI004, komt eraan)*
-- Hoe u de kost van een bedrijfsverhuizing verlaagt *(GUI005, komt eraan)*
-- Welk budget volgens de grootte van de kantoren? *(GUI006, komt eraan)*

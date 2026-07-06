@@ -81,11 +81,3 @@ Nog vóór de offertes kunt u uw budget aftoetsen:
 
 Een offerte voor een bedrijfsverhuizing is geen cijfer uit de lucht gegrepen: ze wordt opgebouwd op basis van een plaatsbezoek, een uurtarief of een prijs op volume, en een reeks posten die u één voor één kunt lezen. Eis het detail, vergelijk op dezelfde uitgangspunten, en gebruik de rekenmodule voor een eerste raming vóór u drie offertes opvraagt.
 
----
-
-**Lees ook**
-
-- Prijs van een bedrijfsverhuizing: de volledige gids *(GUI001)*
-- Wat kost een kantoorverhuizing? *(GUI002)*
-- De verborgen kosten van een kantoorverhuizing *(GUI004, komt eraan)*
-- Hoe u drie vergelijkbare offertes verkrijgt *(GUI018, komt eraan)*

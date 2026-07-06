@@ -93,10 +93,3 @@ Si vous préférez ne pas piloter tout cela vous-même, une agence spécialisée
 
 Un déménagement de bureaux n'a pas de prix unique : il se cadre. Servez-vous des fourchettes pour vous situer, du calculateur pour une première estimation, et de trois devis comparables pour décider en confiance.
 
----
-
-**Lire aussi**
-
-- Le guide complet du prix d'un déménagement d'entreprise *(GUI001, à venir)*
-- Comment se calcule un devis de déménagement *(GUI003, à venir)*
-- Les coûts cachés d'un déménagement de bureaux *(GUI004, à venir)*

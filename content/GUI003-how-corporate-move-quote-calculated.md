@@ -81,11 +81,3 @@ Even before the quotes, you can frame your budget:
 
 A corporate move quote is not a figure pulled out of thin air: it is built from a site visit, an hourly rate or a volume-based price, and a set of items you can read one by one. Insist on the detail, compare on the same basis, and use the calculator for a first estimate before requesting three quotes.
 
----
-
-**Read also**
-
-- The cost of a corporate move: the complete guide *(GUI001)*
-- How much does an office move cost? *(GUI002)*
-- The hidden costs of an office move *(GUI004, coming soon)*
-- How to get three comparable quotes *(GUI018, coming soon)*

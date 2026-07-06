@@ -95,12 +95,3 @@ Benchmarks give an indication, but they do not replace an estimate. To approach 
 
 A corporate move is more than transport: it is priced case by case, depending on the volume, the access, the IT, the schedule and all the coordination around it. There is therefore no universal rate, but benchmarks and a method. Use the orders of magnitude to get your bearings, the calculator for a first estimate, and three comparable quotes to decide with confidence.
 
----
-
-**Read also**
-
-- How much does an office move cost? *(GUI002)*
-- How is a corporate move quote calculated? *(GUI003, coming soon)*
-- The hidden costs of an office move *(GUI004, coming soon)*
-- How to reduce the cost of a corporate move *(GUI005, coming soon)*
-- What budget by office size? *(GUI006, coming soon)*

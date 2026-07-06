@@ -58,11 +58,3 @@ The hardest part remains: spotting the blind spots when you have never run this 
 
 The real cost of an office move goes well beyond the price of the lorry. It builds up before (preparation, permits, fit-out), during (unexpected events, overtime) and after (reinstatement, reinstallation, loss of productivity), not counting internal time. Anticipating them — alone or with a coordinator — keeps the final bill from doubling the quote.
 
----
-
-**Read also**
-
-- The cost of a corporate move: the complete guide *(GUI001)*
-- How much does an office move cost? *(GUI002)*
-- How is a corporate move quote calculated? *(GUI003)*
-- How to reduce the cost of a corporate move *(GUI005, coming soon)*

@@ -94,10 +94,3 @@ Wilt u dit liever niet zelf sturen, dan kan een gespecialiseerd bureau de afbake
 
 Een kantoorverhuizing heeft geen vaste prijs: ze wordt afgebakend. Gebruik de richtcijfers ter oriëntatie, de rekenmodule voor een eerste raming, en drie vergelijkbare offertes om met vertrouwen te beslissen.
 
----
-
-**Lees ook**
-
-- De volledige gids over de prijs van een bedrijfsverhuizing *(GUI001, komt eraan)*
-- Hoe een offerte voor een bedrijfsverhuizing wordt berekend *(GUI003, komt eraan)*
-- De verborgen kosten van een kantoorverhuizing *(GUI004, komt eraan)*

@@ -58,11 +58,3 @@ Reste le plus difficile : repérer les angles morts quand on n'a jamais piloté 
 
 Le vrai coût d'un déménagement de bureaux dépasse largement le prix du camion. Il se construit avant (préparation, autorisations, aménagement), pendant (imprévus, heures supplémentaires) et après (remise en état, réinstallation, perte de productivité), sans compter le temps interne. Les anticiper — seul ou avec un coordinateur — évite que la facture finale ne double celle du devis.
 
----
-
-**Lire aussi**
-
-- Prix d'un déménagement d'entreprise : le guide complet *(GUI001)*
-- Combien coûte un déménagement de bureaux ? *(GUI002)*
-- Comment se calcule un devis de déménagement d'entreprise ? *(GUI003)*
-- Comment réduire le coût d'un déménagement d'entreprise *(GUI005, à venir)*
