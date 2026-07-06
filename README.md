@@ -50,4 +50,11 @@ Puis ouvrir `http://localhost:4173/` (la racine détecte la langue) ou directeme
 
 ## Publication
 
-Après un `npm run build`, on commite les fichiers générés (GitHub Pages sert des fichiers statiques tels quels) puis on pousse. Voir la feuille de route SEO dans `docs/PLAN-SEO-MULTILINGUE.md`.
+Le site est **en production chez behostings** (hébergeur privé), mis à jour par **FTP (FileZilla)**. GitHub ne sert que de **sauvegarde/versioning** ; pousser sur GitHub ne met PAS le site en ligne.
+
+Pour publier :
+
+1. `npm run build` — régénère tout et assemble un dossier `dist/` (contenu publiable uniquement : `fr/ nl/ en/ assets/ identity/ data/`, `index.html`, `sitemap.xml`, `robots.txt`, les relais).
+2. Dans FileZilla, déposer **le contenu de `dist/`** à la racine web de behostings.
+
+`dist/` est régénéré à chaque build et exclu de Git. Les articles Guide vivent dans `content/*.md` (un fichier par langue, reliés par le champ `id`). Voir la feuille de route SEO dans `docs/PLAN-SEO-MULTILINGUE.md`.
