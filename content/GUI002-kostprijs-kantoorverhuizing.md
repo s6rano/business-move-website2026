@@ -1,9 +1,9 @@
 ---
-id: bm-002
+id: GUI002
 lang: nl
 pilier: I
 type: satellite
-hub: bm-001
+hub: GUI001
 vague: 1
 statut: vertaald-v0.1
 slug: kostprijs-kantoorverhuizing
@@ -11,7 +11,7 @@ seo_title: "Wat kost een kantoorverhuizing? (België)"
 seo_meta_description: "Prijs van een kantoorverhuizing in België: de kostenposten, richtcijfers om u te situeren volgens de grootte, en hoe u een betrouwbare raming krijgt."
 cta: calculateur
 illus: price
-liens: [bm-001, bm-003, bm-004, bm-009]
+liens: [GUI001, GUI003, GUI004, GUI009]
 reserve: "De vermelde prijzen zijn indicatieve richtcijfers, te bevestigen; ze binden noch Business Move, noch de dienstverleners."
 ---
 
@@ -98,6 +98,6 @@ Een kantoorverhuizing heeft geen vaste prijs: ze wordt afgebakend. Gebruik de ri
 
 **Lees ook**
 
-- De volledige gids over de prijs van een bedrijfsverhuizing *(bm-001, komt eraan)*
-- Hoe een offerte voor een bedrijfsverhuizing wordt berekend *(bm-003, komt eraan)*
-- De verborgen kosten van een kantoorverhuizing *(bm-004, komt eraan)*
+- De volledige gids over de prijs van een bedrijfsverhuizing *(GUI001, komt eraan)*
+- Hoe een offerte voor een bedrijfsverhuizing wordt berekend *(GUI003, komt eraan)*
+- De verborgen kosten van een kantoorverhuizing *(GUI004, komt eraan)*

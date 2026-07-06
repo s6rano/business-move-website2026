@@ -1,9 +1,9 @@
 ---
-id: bm-002
+id: GUI002
 lang: fr
 pilier: I
 type: satellite
-hub: bm-001
+hub: GUI001
 vague: 1
 statut: brouillon
 slug: cout-demenagement-bureaux
@@ -11,7 +11,7 @@ seo_title: "Combien coûte un déménagement de bureaux ? (Belgique)"
 seo_meta_description: "Prix d'un déménagement de bureaux en Belgique : les postes de coût, des fourchettes pour vous situer selon la taille, et comment obtenir une estimation fiable."
 cta: calculateur
 illus: price
-liens: [bm-001, bm-003, bm-004, bm-009]
+liens: [GUI001, GUI003, GUI004, GUI009]
 reserve: "Les prix cités sont des ordres de grandeur indicatifs, à vérifier ; ils n'engagent ni Business Move ni les prestataires."
 ---
 
@@ -98,6 +98,6 @@ Un déménagement de bureaux n'a pas de prix unique : il se cadre. Servez-vous d
 
 **Lire aussi**
 
-- Le guide complet du prix d'un déménagement d'entreprise *(bm-001, à venir)*
-- Comment se calcule un devis de déménagement *(bm-003, à venir)*
-- Les coûts cachés d'un déménagement de bureaux *(bm-004, à venir)*
+- Le guide complet du prix d'un déménagement d'entreprise *(GUI001, à venir)*
+- Comment se calcule un devis de déménagement *(GUI003, à venir)*
+- Les coûts cachés d'un déménagement de bureaux *(GUI004, à venir)*

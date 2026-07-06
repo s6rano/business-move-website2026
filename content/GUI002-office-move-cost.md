@@ -1,9 +1,9 @@
 ---
-id: bm-002
+id: GUI002
 lang: en
 pilier: I
 type: satellite
-hub: bm-001
+hub: GUI001
 vague: 1
 statut: translated-v0.1
 slug: office-move-cost
@@ -11,7 +11,7 @@ seo_title: "How much does an office move cost? (Belgium)"
 seo_meta_description: "Cost of an office move in Belgium: the cost items, ranges to place yourself by company size, and how to get a reliable estimate."
 cta: calculateur
 illus: price
-liens: [bm-001, bm-003, bm-004, bm-009]
+liens: [GUI001, GUI003, GUI004, GUI009]
 reserve: "The prices shown are indicative estimates, to be confirmed; they bind neither Business Move nor the providers."
 ---
 
@@ -98,6 +98,6 @@ An office move has no single price: it is framed. Use the ranges to place yourse
 
 **Read also**
 
-- The complete guide to the cost of a business move *(bm-001, coming soon)*
-- How an office move quote is calculated *(bm-003, coming soon)*
-- The hidden costs of an office move *(bm-004, coming soon)*
+- The complete guide to the cost of a business move *(GUI001, coming soon)*
+- How an office move quote is calculated *(GUI003, coming soon)*
+- The hidden costs of an office move *(GUI004, coming soon)*
