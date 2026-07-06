@@ -50,6 +50,31 @@ const GUIDE_TEXT = {
   }
 };
 
+// Libelles de bouton CTA d'article (par type de cta, par langue).
+const CTA = {
+  calculateur: { fr: "Estimer mon déménagement", nl: "Mijn verhuizing ramen", en: "Estimate my move" },
+  annuaire: { fr: "Trouver un déménageur", nl: "Een verhuizer vinden", en: "Find a mover" }
+};
+
+// Illustrations d'en-tete : theme (frontmatter `illus`) -> prefixe de fichier.
+const ILLUS_DIR = path.join(__dirname, "assets", "illustrations", "banners");
+const ILLUS_PREFIX = {
+  price: "bm-illus-price-move-",
+  organizer: "bm-illus-organizer-move-",
+  choice: "bm-illus-choisir-choice-move-",
+  space: "bm-illus-amenagement-space-design-move-",
+  local: "bm-illus-local-map-move-",
+  default: "bm-illus-default-"
+};
+const ILLUS_ALT = {
+  price: { fr: "Budget et coût d'un déménagement d'entreprise", nl: "Budget en kosten van een bedrijfsverhuizing", en: "Budget and cost of an office move" },
+  organizer: { fr: "Organiser un déménagement de bureaux", nl: "Een kantoorverhuizing organiseren", en: "Organising an office move" },
+  choice: { fr: "Comparer et choisir un déménageur", nl: "Verhuizers vergelijken en kiezen", en: "Comparing and choosing a mover" },
+  space: { fr: "Aménagement de nouveaux bureaux", nl: "Inrichting van nieuwe kantoren", en: "Fitting out new offices" },
+  local: { fr: "Déménagement d'entreprise en Belgique", nl: "Bedrijfsverhuizing in België", en: "Office move in Belgium" },
+  default: { fr: "Déménagement d'entreprise", nl: "Bedrijfsverhuizing", en: "Office move" }
+};
+
 const i18n = JSON.parse(fs.readFileSync(path.join(SRC, "i18n.json"), "utf8"));
 const pages = JSON.parse(fs.readFileSync(path.join(SRC, "pages.json"), "utf8"));
 
@@ -101,6 +126,7 @@ function tr(lang, key, fallback) {
 
 function mdInline(text) {
   let t = escapeText(text);
+  t = t.replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (m, alt, src) => `<img src="${src}" alt="${alt}" loading="lazy">`);
   t = t.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, label, url) => `<a href="${url}">${label}</a>`);
   t = t.replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>");
   t = t.replace(/\*([^*]+)\*/g, "<em>$1</em>");
@@ -122,6 +148,7 @@ function mdToHtml(md) {
     const line = lines[i];
     if (/^\s*$/.test(line)) { flush(); i++; continue; }
     if (/^---+\s*$/.test(line)) { flush(); out.push("<hr>"); i++; continue; }
+    if (/^\{\{sponsor\}\}\s*$/.test(line)) { flush(); out.push("<!--SPONSOR-INLINE-->"); i++; continue; }
     const h = line.match(/^(#{1,6})\s+(.*)$/);
     if (h) { flush(); const lvl = h[1].length; out.push(`<h${lvl}>` + mdInline(h[2].trim()) + `</h${lvl}>`); i++; continue; }
     if (/^>\s?/.test(line)) {
@@ -174,6 +201,9 @@ function parseArticleFile(raw) {
     id: fm.id,
     lang: fm.lang,
     slug: fm.slug,
+    cta: fm.cta,
+    illus: fm.illus,
+    reserve: stripQuotes(fm.reserve),
     seoTitle: stripQuotes(fm.seo_title),
     seoDesc: stripQuotes(fm.seo_meta_description),
     h1: h1 ? h1[1].trim() : fm.slug || "",
@@ -232,9 +262,15 @@ function applyChrome(html, lang, pageUrls) {
     (m, code) => `data-lang="${code}" aria-pressed="${code === lang}"`
   );
 
+  const links = {
+    home: pageUrl("home", lang),
+    quote: pageUrl("quote", lang),
+    organize: pageUrl("organize", lang),
+    guide: guideIndexUrl(lang)
+  };
   const bootstrap =
     `    <script src="/assets/i18n.js"></script>\n` +
-    `    <script>window.BM_LANG="${lang}";window.BM_PAGE_URLS=${JSON.stringify(pageUrls)};</script>\n` +
+    `    <script>window.BM_LANG="${lang}";window.BM_PAGE_URLS=${JSON.stringify(pageUrls)};window.BM_LINKS=${JSON.stringify(links)};</script>\n` +
     `    <script src="/assets/site.js"></script>`;
   html = html.replace('<script src="/assets/site.js"></script>', bootstrap);
 
@@ -254,6 +290,55 @@ function injectHead(html, linksStr) {
 }
 
 // ---------- Rendus ----------
+
+// Liste (mise en cache) des fichiers d'illustration disponibles.
+let _illusFiles = null;
+function illusFiles() {
+  if (_illusFiles) return _illusFiles;
+  _illusFiles = fs.existsSync(ILLUS_DIR)
+    ? fs.readdirSync(ILLUS_DIR).filter((f) => /\.(png|jpe?g|webp|svg)$/i.test(f)).sort()
+    : [];
+  return _illusFiles;
+}
+
+// Choisit une illustration selon le theme, de façon deterministe (par id d'article).
+function pickIllustration(theme, id) {
+  const t = theme && ILLUS_PREFIX[theme] ? theme : "default";
+  let matches = illusFiles().filter((f) => f.startsWith(ILLUS_PREFIX[t]));
+  if (!matches.length && t !== "default") matches = illusFiles().filter((f) => f.startsWith(ILLUS_PREFIX.default));
+  if (!matches.length) return null;
+  const hash = String(id || "").split("").reduce((a, c) => a + c.charCodeAt(0), 0);
+  return { file: matches[hash % matches.length], theme: ILLUS_PREFIX[t] ? t : "default" };
+}
+
+// Encart sponsor (par defaut : Go to the Point). Balise dans le HTML (commentaire
+// SPONSOR-INSERT + data-sponsor) pour retrouvaille manuelle / futur dossier /sponsors.
+// fullWidth = bandeau pleine largeur (bas d'article) ; sinon carte en cours de lecture.
+function sponsorHtml(lang, fullWidth) {
+  const label = escapeText(tr(lang, "sponsor.label", "En partenariat"));
+  const title = escapeText(tr(lang, "home.gttpTitle", ""));
+  const text = escapeText(tr(lang, "home.gttpText", ""));
+  const cta = escapeText(tr(lang, "home.gttpCta", ""));
+  const inner =
+    `<span class="sponsor-label">${label}</span>\n` +
+    `            <h3>${title}</h3>\n` +
+    `            <p class="microcopy">${text}</p>\n` +
+    `            <a class="btn light" href="https://gotothepoint.eu/contact">${cta}</a>`;
+  if (fullWidth) {
+    return (
+      `<!-- SPONSOR-INSERT (defaut: Go to the Point) — modifiable a la main, ou futur branchement /sponsors -->\n` +
+      `      <section class="section dark sponsor-band" data-sponsor="default" aria-label="Sponsor">\n` +
+      `        <div class="section-inner">\n            ${inner}\n        </div>\n` +
+      `      </section>\n` +
+      `      <!-- /SPONSOR-INSERT -->`
+    );
+  }
+  return (
+    `<!-- SPONSOR-INSERT (defaut: Go to the Point) — modifiable a la main, ou futur branchement /sponsors -->\n` +
+    `          <aside class="sponsor" data-sponsor="default" aria-label="Sponsor">\n            ${inner}\n          </aside>\n` +
+    `          <!-- /SPONSOR-INSERT -->`
+  );
+}
 
 function renderPage(page, lang) {
   let html = fs.readFileSync(path.join(TEMPLATES, page.template), "utf8");
@@ -277,7 +362,40 @@ function renderArticle(article, lang) {
   html = html.replace('content="__DESC__"', () => `content="${escapeAttr(al.seoDesc || "")}"`);
   const alts = LANGS.filter((l) => article.langs[l]).map((l) => ({ lang: l, url: articleUrl(article, l) }));
   html = injectHead(html, headLinks(articleUrl(article, lang), alts));
-  return html.replace("<!--ARTICLE-->", () => al.bodyHtml);
+
+  // Fil d'Ariane : Guide > titre de l'article.
+  const crumb =
+    `<a href="${guideIndexUrl(lang)}">${GUIDE_LABEL[lang]}</a> ` +
+    `<span aria-hidden="true">›</span> <span>${escapeText(al.h1)}</span>`;
+  html = html.replace("<!--BREADCRUMB-->", () => crumb);
+
+  // Visuelle d'en-tete : illustration selon le theme `illus` du frontmatter.
+  let bannerHtml = "";
+  const pick = pickIllustration(al.illus, article.id);
+  if (pick) {
+    const alt = escapeAttr((ILLUS_ALT[pick.theme] && ILLUS_ALT[pick.theme][lang]) || "");
+    bannerHtml = `<figure class="article-banner"><img src="/assets/illustrations/banners/${pick.file}" alt="${alt}"></figure>`;
+  }
+  html = html.replace("<!--BANNER-->", () => bannerHtml);
+
+  // Bloc CTA (outil neutre de BM), pilote par le frontmatter `cta`.
+  let ctaBlock = "";
+  if (al.cta && CTA[al.cta]) {
+    const ctaUrl = al.cta === "annuaire" ? pageUrl("home", lang) : pageUrl("quote", lang);
+    ctaBlock = `<div class="article-cta"><a class="btn" href="${ctaUrl}">${escapeText(CTA[al.cta][lang])} →</a></div>`;
+  }
+  html = html.replace("<!--CTA-->", () => ctaBlock);
+
+  // Mention de reserve, pilotee par le frontmatter `reserve`.
+  const reserveNote = al.reserve ? `<p class="article-reserve">${escapeText(al.reserve)}</p>` : "";
+  html = html.replace("<!--RESERVE-->", () => reserveNote);
+
+  // Encart sponsor pleine largeur en bas d'article.
+  html = html.replace("<!--SPONSOR-BOTTOM-->", () => sponsorHtml(lang, true));
+
+  // Corps de l'article (avec, si un marqueur {{sponsor}} est present, un encart en cours de lecture).
+  const body = al.bodyHtml.replace("<!--SPONSOR-INLINE-->", () => sponsorHtml(lang, false));
+  return html.replace("<!--ARTICLE-->", () => body);
 }
 
 function renderGuideIndex(lang, articles) {
@@ -316,7 +434,8 @@ function copyRecursive(src, dest) {
   if (st.isDirectory()) {
     fs.mkdirSync(dest, { recursive: true });
     fs.readdirSync(src).forEach((name) => {
-      if (name === ".DS_Store" || name.endsWith(".csv")) return; // pas de fichiers systeme ni de leads
+      // Exclus : fichiers systeme, leads (.csv), et reserves non publiees (prefixe _).
+      if (name === ".DS_Store" || name.endsWith(".csv") || name.startsWith("_")) return;
       copyRecursive(path.join(src, name), path.join(dest, name));
     });
   } else {

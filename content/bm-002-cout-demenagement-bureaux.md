@@ -10,9 +10,8 @@ slug: cout-demenagement-bureaux
 seo_title: "Combien coûte un déménagement de bureaux ? (Belgique)"
 seo_meta_description: "Prix d'un déménagement de bureaux en Belgique : les postes de coût, des fourchettes pour vous situer selon la taille, et comment obtenir une estimation fiable."
 cta: calculateur
+illus: price
 liens: [bm-001, bm-003, bm-004, bm-009]
-banner:
-  statut: "à définir (direction artistique BM non encore établie)"
 reserve: "Les prix cités sont des ordres de grandeur indicatifs, à vérifier ; ils n'engagent ni Business Move ni les prestataires."
 ---
 
@@ -49,6 +48,8 @@ Pour lire un devis, il aide de savoir ce qu'il contient. Un déménagement de bu
 - les majorations d'horaire : soirée, week-end, jour férié.
 
 Ces postes ne figurent pas tous dans un devis « au premier prix ». C'est souvent là que se creuse l'écart entre deux offres.
+
+{{sponsor}}
 
 ## Des fourchettes pour vous situer
 
@@ -93,8 +94,6 @@ Si vous préférez ne pas piloter tout cela vous-même, une agence spécialisée
 
 Un déménagement de bureaux n'a pas de prix unique : il se cadre. Servez-vous des fourchettes pour vous situer, du calculateur pour une première estimation, et de trois devis comparables pour décider en confiance.
 
-[Estimer mon déménagement avec le calculateur →](/fr/devis-demenagement-entreprise.html)
-
 ---
 
 **Lire aussi**
@@ -102,7 +101,3 @@ Un déménagement de bureaux n'a pas de prix unique : il se cadre. Servez-vous d
 - Le guide complet du prix d'un déménagement d'entreprise *(bm-001, à venir)*
 - Comment se calcule un devis de déménagement *(bm-003, à venir)*
 - Les coûts cachés d'un déménagement de bureaux *(bm-004, à venir)*
-
----
-
-*Réserve : les prix cités sont des ordres de grandeur indicatifs, à vérifier ; ils n'engagent ni Business Move ni les prestataires.*

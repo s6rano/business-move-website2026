@@ -318,10 +318,10 @@
           <div class="results-list">${limited.map((mover) => renderMoverCard(mover, { originPostalCode: normalized })).join("")}</div>
         </div>
         <aside class="soft-panel promo">
-          <img src="identity/logo-bm-white-200-62.png" alt="Business Move">
+          <img src="/identity/logo-bm-white-200-62.png" alt="Business Move">
           <h3>${t("search.promoTitle")}</h3>
           <p class="microcopy">${t("search.promoText")}</p>
-          <a class="btn light" href="devis.html">${t("search.promoCta")}</a>
+          <a class="btn light" href="${(window.BM_LINKS && window.BM_LINKS.quote) || "/"}">${t("search.promoCta")}</a>
         </aside>
       </div>
     `;

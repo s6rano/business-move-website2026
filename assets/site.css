@@ -677,6 +677,161 @@ h3 {
   color: var(--ink);
 }
 
+/* ---------- Articles Guide ---------- */
+
+.article-wrap {
+  width: min(760px, 100%);
+  margin: 0 auto;
+}
+
+.breadcrumb {
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.article-banner {
+  margin: 0 0 28px;
+}
+
+.article-banner img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  background: var(--panel-soft);
+}
+
+.breadcrumb a:hover {
+  color: var(--ink);
+  text-decoration: underline;
+}
+
+.breadcrumb span[aria-hidden] {
+  margin: 0 6px;
+}
+
+.article-body {
+  font-size: 18px;
+  line-height: 1.7;
+}
+
+.article-body h1 {
+  max-width: none;
+  margin-bottom: 22px;
+  font-size: clamp(30px, 4vw, 42px);
+  line-height: 1.12;
+}
+
+.article-body h2 {
+  margin: 38px 0 12px;
+  font-size: clamp(22px, 2.4vw, 28px);
+  line-height: 1.22;
+}
+
+.article-body p {
+  margin-bottom: 18px;
+}
+
+.article-body ul,
+.article-body ol {
+  margin: 0 0 18px;
+  padding-left: 22px;
+}
+
+.article-body li {
+  margin-bottom: 6px;
+}
+
+.article-body a {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.article-body blockquote {
+  margin: 26px 0;
+  padding: 2px 0 2px 18px;
+  border-left: 4px solid var(--accent);
+  color: var(--ink);
+  font-size: 20px;
+  font-style: italic;
+}
+
+.article-body blockquote p {
+  margin: 0;
+}
+
+.article-body hr {
+  border: 0;
+  border-top: 1px solid var(--line);
+  margin: 30px 0;
+}
+
+.article-cta {
+  margin: 6px 0 24px;
+}
+
+.article-cta .btn {
+  min-height: 52px;
+  padding: 0 24px;
+}
+
+.article-reserve {
+  margin: 0 0 28px;
+  color: var(--muted);
+  font-size: 13px;
+  font-style: italic;
+}
+
+.sponsor {
+  margin-top: 8px;
+  padding: 22px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #404c1d;
+  color: #fff;
+}
+
+.sponsor-label {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.16);
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.sponsor h3 {
+  color: #fff;
+}
+
+.sponsor .microcopy {
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.sponsor .btn,
+.sponsor-band .btn {
+  text-decoration: none;
+}
+
+/* Bandeau sponsor pleine largeur en bas d'article (réutilise .section.dark) */
+.sponsor-band {
+  padding: 56px 0;
+}
+
+.sponsor-band h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+.sponsor-band .microcopy {
+  max-width: 680px;
+}
+
 @media (max-width: 900px) {
   .nav {
     flex-wrap: wrap;
