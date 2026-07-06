@@ -50,6 +50,28 @@ const GUIDE_TEXT = {
   }
 };
 
+// Page CGU (Conditions generales d'utilisation) : legale, une page par langue.
+// Contenu = content/legal/cgu.<lang>.md (Markdown pur). Slug localise + hreflang.
+const CGU_SLUG = {
+  fr: "conditions-generales-utilisation.html",
+  nl: "gebruiksvoorwaarden.html",
+  en: "terms-of-use.html"
+};
+const CGU_META = {
+  fr: {
+    title: "Conditions générales d'utilisation | Business Move",
+    description: "Conditions générales d'utilisation de Business Move : nature informative du site, valeur purement indicative des estimations de prix et du calculateur, limitation de responsabilité, droit belge."
+  },
+  nl: {
+    title: "Gebruiksvoorwaarden | Business Move",
+    description: "Gebruiksvoorwaarden van Business Move: informatieve aard van de site, louter indicatieve waarde van de prijsramingen en de rekenmodule, beperking van aansprakelijkheid, Belgisch recht."
+  },
+  en: {
+    title: "Terms of use | Business Move",
+    description: "Business Move terms of use: informational nature of the site, purely indicative value of price estimates and the calculator, limitation of liability, Belgian law."
+  }
+};
+
 // Libelles de bouton CTA d'article (par type de cta, par langue).
 const CTA = {
   calculateur: { fr: "Estimer mon déménagement", nl: "Mijn verhuizing ramen", en: "Estimate my move" },
@@ -101,6 +123,12 @@ function guideIndexUrl(lang) {
 }
 function guideIndexOutput(lang) {
   return path.join(DIST, lang, GUIDE_SEG[lang], "index.html");
+}
+function cguUrl(lang) {
+  return `/${lang}/${CGU_SLUG[lang]}`;
+}
+function cguOutput(lang) {
+  return path.join(DIST, lang, CGU_SLUG[lang]);
 }
 function articleUrl(article, lang) {
   return `/${lang}/${GUIDE_SEG[lang]}/${article.langs[lang].slug}.html`;
@@ -256,6 +284,7 @@ function applyChrome(html, lang, pageUrls) {
     html = html.split(`href="${href}"`).join(`href="${pageUrl(HREF_TO_PAGE[href], lang)}"`);
   });
   html = html.split('href="guide.html"').join(`href="${guideIndexUrl(lang)}"`);
+  html = html.split('href="cgu.html"').join(`href="${cguUrl(lang)}"`);
 
   html = html.replace(
     /data-lang="([a-z]{2})" aria-pressed="[^"]*"/g,
@@ -445,6 +474,19 @@ function renderGuideIndex(lang, articles) {
   return injectHead(html, headLinks(guideIndexUrl(lang), alts));
 }
 
+function renderCgu(lang) {
+  let html = fs.readFileSync(path.join(TEMPLATES, "cgu.html"), "utf8");
+  const pageUrls = LANGS.reduce((a, l) => ((a[l] = cguUrl(l)), a), {});
+  html = applyChrome(html, lang, pageUrls);
+  const meta = CGU_META[lang];
+  html = html.replace("__TITLE__", () => escapeText(meta.title));
+  html = html.replace('content="__DESC__"', () => `content="${escapeAttr(meta.description)}"`);
+  const md = fs.readFileSync(path.join(CONTENT, "legal", `cgu.${lang}.md`), "utf8");
+  html = html.replace("<!--LEGAL-->", () => mdToHtml(md));
+  const alts = LANGS.map((l) => ({ lang: l, url: cguUrl(l) }));
+  return injectHead(html, headLinks(cguUrl(lang), alts));
+}
+
 function writeFileSafe(filePath, content) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true });
   fs.writeFileSync(filePath, content, "utf8");
@@ -514,6 +556,9 @@ function buildSitemap(articles) {
   });
   LANGS.forEach((lang) => {
     urls.push(sitemapEntry(`${BASE_URL}${guideIndexUrl(lang)}`, LANGS.map((l) => ({ lang: l, url: guideIndexUrl(l) }))));
+  });
+  LANGS.forEach((lang) => {
+    urls.push(sitemapEntry(`${BASE_URL}${cguUrl(lang)}`, LANGS.map((l) => ({ lang: l, url: cguUrl(l) }))));
   });
   articles.forEach((a) => {
     const existing = LANGS.filter((l) => a.langs[l]);
@@ -592,13 +637,15 @@ function main() {
     })
   );
 
+  LANGS.forEach((lang) => writeFileSafe(cguOutput(lang), renderCgu(lang)));
+
   writeFileSafe(path.join(DIST, "index.html"), buildRoot());
   writeFileSafe(path.join(DIST, "sitemap.xml"), buildSitemap(articles));
   writeFileSafe(path.join(DIST, "robots.txt"), buildRobots());
   writeFileSafe(path.join(DIST, ".htaccess"), buildHtaccess());
 
   console.log(
-    `OK : ${count} pages + ${LANGS.length} index Guide + ${artCount} article(s) + racine + sitemap.xml + robots.txt + .htaccess`
+    `OK : ${count} pages + ${LANGS.length} index Guide + ${artCount} article(s) + ${LANGS.length} CGU + racine + sitemap.xml + robots.txt + .htaccess`
   );
   console.log("Tout est dans dist/ — depose son CONTENU a la racine web de behostings (FTP).");
 }

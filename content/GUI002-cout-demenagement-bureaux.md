@@ -1,3 +1,4 @@
+
 ---
 id: GUI002
 lang: fr
@@ -14,7 +15,6 @@ illus: price
 liens: [GUI001, GUI003, GUI004, GUI009]
 reserve: "Les prix cités sont des ordres de grandeur indicatifs, à vérifier ; ils n'engagent ni Business Move ni les prestataires."
 ---
-
 # Combien coûte un déménagement de bureaux en Belgique ? Les repères pour vous situer
 
 **Vous devez chiffrer le déménagement de vos bureaux, et vous vous heurtez vite au même mur : d'un prestataire à l'autre, les montants annoncés varient du simple au double. Difficile, dans ces conditions, de savoir si un devis est raisonnable — ou de défendre un budget en interne.**
