@@ -274,6 +274,17 @@ function applyChrome(html, lang, pageUrls) {
     `    <script src="/assets/site.js"></script>`;
   html = html.replace('<script src="/assets/site.js"></script>', bootstrap);
 
+  // Liens sortants vers Go to the Point (sponsor) : les pages NL et EN pointent
+  // vers la section anglophone de GTTP (pas de version NL cote GTTP). Le FR reste
+  // sur la racine FR. La page contact FR (/contact) devient la contact EN reelle
+  // (/en/contact-us/). Le texte de marque « gotothepoint.eu » (sans https) est
+  // laisse tel quel.
+  if (lang !== "fr") {
+    html = html
+      .replace(/https:\/\/gotothepoint\.eu\/contact\b/g, "https://gotothepoint.eu/en/contact-us/")
+      .replace(/https:\/\/gotothepoint\.eu(?!\/en)(?=["'\s<)])/g, "https://gotothepoint.eu/en/");
+  }
+
   return html;
 }
 
@@ -314,6 +325,16 @@ function pickIllustration(theme, id) {
 // Encart sponsor (par defaut : Go to the Point). Balise dans le HTML (commentaire
 // SPONSOR-INSERT + data-sponsor) pour retrouvaille manuelle / futur dossier /sponsors.
 // fullWidth = bandeau pleine largeur (bas d'article) ; sinon carte en cours de lecture.
+// Source unique des liens sortants Go to the Point, par langue.
+// NL/EN -> section anglophone de GTTP (GTTP n'a pas de version NL) ; FR -> racine FR.
+function gttpUrl(lang, kind) {
+  const en = lang !== "fr";
+  if (kind === "contact") {
+    return en ? "https://gotothepoint.eu/en/contact-us/" : "https://gotothepoint.eu/contact";
+  }
+  return en ? "https://gotothepoint.eu/en/" : "https://gotothepoint.eu";
+}
+
 function sponsorHtml(lang, fullWidth) {
   const label = escapeText(tr(lang, "sponsor.label", "En partenariat"));
   const title = escapeText(tr(lang, "home.gttpTitle", ""));
@@ -323,7 +344,7 @@ function sponsorHtml(lang, fullWidth) {
     `<span class="sponsor-label">${label}</span>\n` +
     `            <h3>${title}</h3>\n` +
     `            <p class="microcopy">${text}</p>\n` +
-    `            <a class="btn light" href="https://gotothepoint.eu/contact">${cta}</a>`;
+    `            <a class="btn light" href="${gttpUrl(lang, "contact")}">${cta}</a>`;
   if (fullWidth) {
     return (
       `<!-- SPONSOR-INSERT (defaut: Go to the Point) — modifiable a la main, ou futur branchement /sponsors -->\n` +
