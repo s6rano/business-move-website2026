@@ -97,7 +97,7 @@ const PRIVACY_META = {
 // Google Analytics 4 (mesure d'audience). Laisser VIDE = aucun cookie, aucun
 // bandeau de consentement (etat honnete par defaut). Mettre "G-XXXXXXXXXX" pour
 // activer : le bandeau de consentement s'affiche et GA ne se charge qu'apres accord.
-const GA_MEASUREMENT_ID = "";
+const GA_MEASUREMENT_ID = "G-NY3X23BD1N";
 
 // Libelles de bouton CTA d'article (par type de cta, par langue).
 const CTA = {
