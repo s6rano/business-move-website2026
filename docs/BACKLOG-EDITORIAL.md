@@ -2,8 +2,26 @@
 
 > **Document de référence** pour la production de contenu (Phase 3). Il consolide :
 > `COCONS-SEMANTIQUES.md` (carte v1), `Recos-perplexity.md` (enrichissement Perplexity du 3 juillet 2026) et `PLAN-SEO-MULTILINGUE.md` (architecture technique).
-> **Statut** : structure figée, prêt à produire. Volumes de mots-clés réels **encore à obtenir** (voir « Points ouverts »).
-> Dernière révision : 3 juillet 2026.
+> **Statut** : structure figée, production en cours. Volumes de mots-clés réels **encore à obtenir** (voir « Points ouverts »).
+> Dernière révision : 6 juillet 2026.
+
+## État de production (6 juillet 2026)
+
+**Cocon P1 — Prix : COMPLET (6/6), trilingue FR/NL/EN, en ligne.**
+
+| ID | Sujet | FR | NL | EN | QA rédaction | QA traduction |
+|---|---|---|---|---|---|---|
+| GUI001 | Hub — Prix déménagement entreprise | ✅ | ✅ | ✅ | Acceptable | 0/0 |
+| GUI002 | Combien coûte un déménagement de bureaux | ✅ | ✅ | ✅ | Acceptable | 0/0 |
+| GUI003 | Comment se calcule un devis | ✅ | ✅ | ✅ | Acceptable | 0/0 |
+| GUI004 | Les coûts cachés (→ GTTP) | ✅ | ✅ | ✅ | Acceptable | 0/0 |
+| GUI005 | Réduire le coût (→ GTTP) | ✅ | ✅ | ✅ | Acceptable | 0/0 |
+| GUI006 | Budget selon la taille | ✅ | ✅ | ✅ | Acceptable | 0/0 |
+
+- **Maillage interne** : automatique (bloc « Lire aussi » généré depuis `liens`, ne relie que les articles publiés). Le hub relie ses 5 satellites.
+- **CTA** : Calculateur (GUI001/002/003/006) ; **funnel GTTP via l'encart sponsor, sans bouton calculateur** (GUI004/005).
+- **Suite (fin de vague 1)** : **P2 Organiser** (GUI007 hub, GUI008) puis **P3 Choisir** (GUI015 hub, GUI016, GUI017). Ensuite vague 2 (approfondissement + 1-2 pages locales max).
+- **Chaîne de production rodée** : cadrage validé → sources belges (WebSearch) → FR → `qa_bm.py` → NL/EN → `qa_translate.py` (0/0) → `npm run build` → FTP behostings.
 
 ## Convention d'identité (rappel)
 
