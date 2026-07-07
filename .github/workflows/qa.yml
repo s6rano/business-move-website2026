@@ -6,11 +6,12 @@ name: QA éditoriale
 # Pour rendre ce contrôle OBLIGATOIRE : Settings > Branches > règle de protection
 # sur `main` > "Require status checks to pass" > cocher "qa".
 
+# Pas de filtre `paths` : quand `qa` est un check REQUIS (branch ruleset), il doit
+# se déclencher et reporter sur CHAQUE PR vers main — sinon une PR qui ne touche
+# pas content/ resterait bloquée « en attente » d'un statut qui n'arrive jamais.
 on:
   pull_request:
-    paths:
-      - "content/**"
-      - "qa/**"
+    branches: [main]
   workflow_dispatch:
 
 jobs:
