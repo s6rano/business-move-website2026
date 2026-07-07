@@ -1,0 +1,10 @@
+# Bundle QA vendoré — source unique = les repos Stack-editorial-*
+# (voir qa/README.md pour la resynchronisation)
+
+qa_bm.py            <- s6rano/stack-editorial-bm : scripts/qa_bm.py (avec flag --ci)
+engine/qa_translate.py <- s6rano/stack-editorial-translate : qa/qa_translate.py
+langues/*.md        <- s6rano/stack-editorial-translate : langues/  (NL-BE v0.2, EN-GB)
+brand-tables/*      <- s6rano/stack-editorial-bm : traduction/  (tables nl-BE + en-GB, manifest)
+
+vendored_le: 2026-07-07
+nl_be_regles: v0.2

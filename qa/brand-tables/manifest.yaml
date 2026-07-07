@@ -1,0 +1,73 @@
+# manifest.yaml — déclaration de la marque Business Move pour le moteur de traduction
+# Conforme à Stack-editorial-translate/CONTRAT.md. C'est le SEUL point de couplage :
+# le moteur ne lit que ce fichier + les tables ci-dessous, jamais les couches brutes.
+# DÉRIVÉ du manifest GTTP. BROUILLON v0.1 à valider ; tables NL-BE / EN-GB à générer.
+
+marque: "Business Move (BM)"
+langue_source: fr-BE
+langues_cibles: [nl-BE, en-GB]   # BM est trilingue dès le départ (site businessmove.eu)
+
+# Public/intention par langue cible (clé = langue ; oriente les choix du moteur).
+cible_traduction:
+  nl-BE: >
+    Lecteurs néerlandophones de Belgique (Flandre + Bruxelles). Néerlandais de
+    Belgique (nl-BE), pas nl-NL. Garder les réalités belges (postcode, régions) ;
+    viser les mots-clés SEO néerlandais réels, pas une traduction littérale du FR.
+  en-GB: >
+    Décideurs et porteurs de projet internationaux basés en Belgique. Garder les
+    réalités institutionnelles belges en les glosant (works council, CPBW), ne pas
+    les transposer en équivalents britanniques.
+
+# Périmètre métier (borne ce que fait BM — évite les contresens de rôle en traduction).
+perimetre: >
+  Business Move est un ANNUAIRE B2B de déménageurs d'entreprise en Belgique + un
+  calculateur de devis indicatif + des contenus (guides). BM n'est PAS un déménageur,
+  PAS une agence de pilotage (ça, c'est Go to the Point, marque cousine vers laquelle
+  BM oriente). Rôle = ressource neutre qui informe, compare et oriente.
+
+# Résumé de voix (condensé de la couche 01) : sert au moteur à caler le registre cible.
+voix_resume: |
+  Tiers de confiance : clair, neutre, utile, accessible. Registre professionnel
+  accessible (ni familier, ni institutionnel premium), phrases lisibles, exemples et
+  chiffres concrets. « vous » (le lecteur) ; « nous » de BM discret. Technique glosé.
+  Neutralité crédible, jamais d'autopromotion. Orientation vers GTTP/partenaires =
+  service rendu au lecteur, jamais injonction commerciale.
+
+# Expansion PICAT par langue (glose + QA M-1). L'acronyme est stable ; l'expansion change.
+picat:
+  P: { fr: Persuasif,       en: Persuasive,     nl: Persuasief }
+  I: { fr: Informatif,      en: Informative,    nl: Informatief }
+  C: { fr: Conversationnel, en: Conversational, nl: Conversationeel }
+  A: { fr: Artistique,      en: Artistic,       nl: Artistiek }
+  T: { fr: Technique,       en: Technical,      nl: Technisch }
+
+# Tables de correspondance. Les tables NL-BE et EN-GB sont À GÉNÉRER (n'existent pas encore).
+tables:
+  blacklist:
+    derive_de: ../couches/02-blacklist.md
+    version_source: "héritée de GTTP v0.3 — à ajuster pour BM"
+    statut: "générées v0.1 (EN héritées de GTTP ; NL à valider par relecteur natif)"
+    fichiers:
+      en-GB: table-02.en-GB.md
+      nl-BE: table-02.nl-BE.md
+  glossaire:
+    derive_de: ../couches/03-glossaire-metier-bm.md
+    version_source: "héritée de GTTP v0.4 — à élaguer pour BM"
+    statut: "générées v0.1 (EN héritées de GTTP ; NL à valider par relecteur natif)"
+    fichiers:
+      en-GB: table-03.en-GB.md
+      nl-BE: table-03.nl-BE.md
+  verbatims:
+    derive_de: "../couches/04-clients-bm.md (renvoi au Bloc D de GTTP)"
+    version_source: "héritée de GTTP"
+    statut: "à collecter en natif (non traduit)"
+    fichiers: {}
+
+# Renvois utiles (pour l'humain / la traçabilité — pas lus par le moteur).
+couches:
+  voix: ../couches/01-brand-voice-playbook.md
+  qa_source: ../couches/05b-protocole-qa.md
+
+meta:
+  version_manifest: "v0.2 — 6 juillet 2026 (tables en-GB + nl-BE générées v0.1 ; QA nl-BE testée OK)"
+  contrat: ../../Stack-editorial-translate/CONTRAT.md

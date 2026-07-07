@@ -1,0 +1,25 @@
+name: QA éditoriale
+
+# Passe la QA rédaction (qa_bm --ci) + traduction (qa_translate) sur tous les
+# articles content/*.md à chaque Pull Request qui touche le contenu ou le bundle QA.
+# Le job échoue (rouge) s'il reste une violation DURE -> merge à bloquer.
+# Pour rendre ce contrôle OBLIGATOIRE : Settings > Branches > règle de protection
+# sur `main` > "Require status checks to pass" > cocher "qa".
+
+on:
+  pull_request:
+    paths:
+      - "content/**"
+      - "qa/**"
+  workflow_dispatch:
+
+jobs:
+  qa:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: QA rédaction + traduction (0 dépendance externe)
+        run: python3 qa/run_qa.py
