@@ -189,7 +189,16 @@ def main():
 
     # --- Localisation des fichiers ------------------------------------------
     ici = os.path.dirname(os.path.abspath(__file__))
-    f_langue = os.path.join(ici, "..", "langues", f"{args.lang}.md")
+    dossier_langues = os.path.join(ici, "..", "langues")
+    f_langue = os.path.join(dossier_langues, f"{args.lang}.md")
+    if not os.path.exists(f_langue) and os.path.isdir(dossier_langues):
+        # Repli insensible a la casse : macOS trouve « NL-BE.md » quand on cherche
+        # « nl-BE.md », mais Linux/CI y est sensible. On resout par comparaison lower().
+        cible = f"{args.lang}.md".lower()
+        for nom in os.listdir(dossier_langues):
+            if nom.lower() == cible:
+                f_langue = os.path.join(dossier_langues, nom)
+                break
     f_table02 = os.path.join(args.stack, f"table-02.{args.lang}.md")
     f_table03 = os.path.join(args.stack, f"table-03.{args.lang}.md")
 
